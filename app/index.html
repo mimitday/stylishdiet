@@ -595,6 +595,37 @@ body {
   font-size:var(--fs-xs); letter-spacing:.2em; text-transform:uppercase;
   font-family:'Cormorant Garamond',serif; padding:5px 10px; cursor:pointer; white-space:nowrap;
 }
+
+/* ════ DM ════ */
+.dm-overlay {
+  position:absolute; inset:0; z-index:50;
+  background:rgba(0,0,0,0.65);
+  display:flex; align-items:flex-end;
+  opacity:0; pointer-events:none; transition:opacity .3s;
+}
+.dm-overlay.show { opacity:1; pointer-events:all; }
+.dm-card {
+  width:100%; background:var(--surface);
+  border-top:0.5px solid var(--accent);
+  padding:20px 24px 36px;
+  transform:translateY(100%);
+  transition:transform .42s cubic-bezier(.2,.8,.2,1);
+}
+.dm-overlay.show .dm-card { transform:translateY(0); }
+.dm-tag-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.dm-tag { font-size:var(--fs-xs); letter-spacing:.4em; color:var(--accent); text-transform:uppercase; }
+.dm-close-btn { background:transparent; border:none; color:var(--muted); font-size:12px; cursor:pointer; padding:0; transition:color .2s; }
+.dm-close-btn:hover { color:var(--text); }
+.dm-sender-row { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+.dm-avatar { width:36px; height:36px; border:.5px solid var(--accent); display:flex; align-items:center; justify-content:center; font-family:'Cormorant',serif; font-size:16px; font-weight:700; color:var(--accent); flex-shrink:0; }
+.dm-name { font-family:'Cormorant',serif; font-size:18px; font-weight:700; color:var(--text); letter-spacing:.06em; }
+.dm-role { font-size:var(--fs-xs); letter-spacing:.2em; color:var(--muted); text-transform:uppercase; margin-top:2px; }
+.dm-text { font-size:14px; letter-spacing:.06em; color:var(--text); line-height:1.8; margin-bottom:20px; font-style:italic; }
+.dm-text.locked { opacity:.35; letter-spacing:.3em; font-style:normal; font-size:var(--fs-sm); }
+.dm-actions { display:flex; gap:8px; }
+.dm-dismiss-btn { border:.5px solid var(--border); background:transparent; color:var(--muted); font-size:var(--fs-xs); letter-spacing:.28em; text-transform:uppercase; font-family:'Cormorant Garamond',serif; padding:10px 20px; cursor:pointer; transition:all .2s; }
+.dm-dismiss-btn:hover { border-color:var(--text); color:var(--text); }
+.dm-unlock-btn { background:var(--accent); border:none; color:#000; font-size:var(--fs-xs); letter-spacing:.28em; text-transform:uppercase; font-family:'Cormorant Garamond',serif; padding:10px 20px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -952,6 +983,28 @@ body {
     <span>Camera</span>
   </button>
 </nav>
+
+<!-- ══════════════════ DM OVERLAY ══════════════════ -->
+<div class="dm-overlay" id="dm-overlay">
+  <div class="dm-card">
+    <div class="dm-tag-row">
+      <span class="dm-tag">Direct Message</span>
+      <button class="dm-close-btn" onclick="dismissDM()">✕</button>
+    </div>
+    <div class="dm-sender-row">
+      <div class="dm-avatar" id="dm-avatar">A</div>
+      <div>
+        <div class="dm-name" id="dm-name">—</div>
+        <div class="dm-role" id="dm-role">—</div>
+      </div>
+    </div>
+    <p class="dm-text" id="dm-text">—</p>
+    <div class="dm-actions">
+      <button class="dm-dismiss-btn" id="dm-dismiss-btn" onclick="dismissDM()">Close</button>
+      <button class="dm-unlock-btn" id="dm-unlock-btn" onclick="showDMUnlock()" style="display:none">Unlock →</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════════════ TRACK OVERLAY ══════════════════ -->
 <div class="track-overlay" id="track-overlay">
@@ -1562,6 +1615,7 @@ function completeSession() {
   if (currentDayNum === 'CARE') { startCareSession(); }
   else { buildMissionList(); }
   showScreen('main');
+  setTimeout(() => checkDM(true), 800);
 }
 
 function exitTimer() {
@@ -1626,6 +1680,155 @@ function playTick(accent) {
     gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
     osc.start(); osc.stop(audioCtx.currentTime + 0.08);
   } catch {}
+}
+
+/* ════════════════════════════════════
+   DM ENGINE
+════════════════════════════════════ */
+const DM_CHARS = [
+  { id:'alex', name:'Alex Chen',     role:{en:'Fashion Photographer',   jp:'ファッションフォトグラファー'}, city:'New York',    free:true,
+    msgs:[
+      {en:"Heard you've been moving. Keep it up — the camera rewards consistency.",
+       jp:"動いてるって聞いた。続けて。カメラは継続を覚えてる。"},
+      {en:"I've shot thousands of bodies. The ones that change aren't the ones who try harder. They show up.",
+       jp:"何千ものカラダを撮ってきた。変わるのは頑張る人じゃない。現れる人。"},
+      {en:"Next time I'm in your city, I want to shoot you. Something's different. I can feel it.",
+       jp:"次にあなたの街に来たとき、撮らせてほしい。何か変わった。ここから感じる。"},
+    ]},
+  { id:'luca', name:'Luca Romano',   role:{en:'Creative Director',      jp:'クリエイティブディレクター'},  city:'Milan',       free:true,
+    msgs:[
+      {en:"In this industry, consistency is the rarest luxury. You're building it.",
+       jp:"この業界では、継続が最も希少なラグジュアリー。あなたはそれを積み上げてる。"},
+      {en:"I build campaigns around women who own their space. You're starting to do that.",
+       jp:"自分の空間を持つ女性でキャンペーンを作る。あなたはそれを始めている。"},
+      {en:"Milano SS show is coming. There's a certain energy I need. You have it now.",
+       jp:"ミラノSSショーが近い。必要なエネルギーがある。今のあなたにはそれがある。"},
+    ]},
+  { id:'hugo', name:'Hugo Devereux', role:{en:'Art Director',           jp:'アートディレクター'},          city:'Paris',       free:true,
+    msgs:[
+      {en:"The best work I've ever directed was with women who moved like they meant it.",
+       jp:"私が手がけた最高の仕事は、本気で動く女性たちとのものだった。"},
+      {en:"In Paris we say the body is the first canvas. Yours is mid-edit.",
+       jp:"パリでは、カラダが最初のカンバスだという。あなたのは今、エディット中。"},
+      {en:"I'm casting for a project. Nothing confirmed. But your name came up.",
+       jp:"あるプロジェクトのキャスティング中。確定じゃない。でも、あなたの名前が出た。"},
+    ]},
+  { id:'zara', name:'Zara Kim',      role:{en:'Stylist',                jp:'スタイリスト'},                city:'London',      free:true,
+    msgs:[
+      {en:"The women I dress best have decided something. Have you decided?",
+       jp:"私が一番うまく着せられる女性は、何かを決めた人。あなたは決めた？"},
+      {en:"Clothes look different on a body that moves. Yours is starting to carry things differently.",
+       jp:"動くカラダには服が違って見える。あなたのカラダは纏い方が変わってきてる。"},
+      {en:"I pulled pieces for a shoot next month. I had you in mind. Strange, right?",
+       jp:"来月の撮影用にピックした。あなたをイメージしてた。不思議でしょ？"},
+    ]},
+  { id:'nico', name:'Nico Fontaine', role:{en:'Magazine Editor',        jp:'ファッション誌エディター'},    city:'Paris',       free:true,
+    msgs:[
+      {en:"We ran a feature on women who move with intention. You would have been perfect.",
+       jp:"意図を持って動く女性たちの特集を出した。あなたはぴったりだったと思う。"},
+      {en:"Our best covers are never about the body. They're about what the body says. Yours is talking.",
+       jp:"最高の表紙はカラダについてじゃない。カラダが語ることについて。あなたのカラダが話し始めてる。"},
+      {en:"I'm looking for a story. Someone who changed something quietly. Maybe you.",
+       jp:"ストーリーを探してる。静かに何かを変えた人。もしかして、あなたかも。"},
+    ]},
+  { id:'ryo',  name:'Ryō',           role:{en:'Model',                  jp:'モデル'},                     city:'Tokyo',       free:false,
+    msgs:[
+      {en:"You've been busy. I can tell.",
+       jp:"忙しかったんだね。わかる。"},
+      {en:"I saw something in you I couldn't look away from.",
+       jp:"あなたの中に何かを見た。目が離せなかった。"},
+      {en:"You're getting more beautiful. I don't say that to everyone.",
+       jp:"きれいになってる。誰にでも言うわけじゃない。"},
+    ]},
+  { id:'seb',  name:'Sebastian',     role:{en:'Actor',                  jp:'俳優'},                       city:'Los Angeles', free:false,
+    msgs:[
+      {en:"I work with beautiful people every day. Not everyone has what you have.",
+       jp:"毎日きれいな人たちと働いてる。あなたが持つものを持ってる人は多くない。"},
+      {en:"My trainer mentioned your program. Then I looked you up.",
+       jp:"トレーナーがあなたのプログラムの話をしてた。調べたら、あなたのことも調べてた。"},
+      {en:"Whatever you're doing — don't stop. The difference is obvious.",
+       jp:"何をしてるか知らないけど、やめないで。違いは明らか。"},
+    ]},
+  { id:'matt', name:'Matteo',        role:{en:'Model',                  jp:'モデル'},                     city:'Milan',       free:false,
+    msgs:[
+      {en:"In Italy we say a woman who takes care of herself loves herself. Ciao, bella.",
+       jp:"イタリアでは、自分を大切にする女性は自分を愛していると言う。チャオ、ベッラ。"},
+      {en:"I showed your edit to my colleague. She asked: chi è questa? I smiled.",
+       jp:"あなたのエディットを同僚に見せた。彼女は：chi è questa？って。私は微笑んだ。"},
+      {en:"You know what's beautiful? Discipline. I can see it in you.",
+       jp:"何が美しいかわかる？規律。あなたの中に見える。"},
+    ]},
+];
+
+function dmGetLang() {
+  return localStorage.getItem('te-lang') || (navigator.language.startsWith('ja') ? 'jp' : 'en');
+}
+
+function dmBuildQueue() {
+  const q = [];
+  for (let m = 0; m < 3; m++) {
+    DM_CHARS.forEach(c => { if (c.msgs[m]) q.push({ charId: c.id, msgIdx: m }); });
+  }
+  return q;
+}
+
+function checkDM(force) {
+  const lastDate = S.get('dm-last-date', null);
+  if (!force) {
+    if (!lastDate) {
+      const hasDone = Object.keys(localStorage).some(k => k.startsWith('be-done-'));
+      if (!hasDone) return;
+    } else {
+      const days = Math.floor((new Date() - new Date(lastDate)) / 86400000);
+      if (days < 4) return;
+    }
+  }
+  const queue = dmBuildQueue();
+  const idx   = S.get('dm-index', 0);
+  const entry = queue[idx % queue.length];
+  const char  = DM_CHARS.find(c => c.id === entry.charId);
+  const lang  = dmGetLang();
+
+  document.getElementById('dm-avatar').textContent = char.name[0];
+  document.getElementById('dm-name').textContent   = char.name;
+  document.getElementById('dm-role').textContent   = `${char.role[lang]} · ${char.city}`;
+
+  const textEl    = document.getElementById('dm-text');
+  const unlockBtn = document.getElementById('dm-unlock-btn');
+  const dismissBtn= document.getElementById('dm-dismiss-btn');
+
+  if (!char.free) {
+    textEl.textContent = '— — — — — — — — — —';
+    textEl.classList.add('locked');
+    unlockBtn.style.display  = 'block';
+    dismissBtn.style.display = 'none';
+  } else {
+    textEl.textContent = char.msgs[entry.msgIdx][lang];
+    textEl.classList.remove('locked');
+    unlockBtn.style.display  = 'none';
+    dismissBtn.style.display = 'block';
+  }
+
+  document.getElementById('dm-overlay').classList.add('show');
+  S.set('dm-last-date', new Date().toDateString());
+}
+
+function dismissDM() {
+  document.getElementById('dm-overlay').classList.remove('show');
+  S.set('dm-index', S.get('dm-index', 0) + 1);
+}
+
+function showDMUnlock() {
+  document.getElementById('dm-overlay').classList.remove('show');
+  S.set('dm-index', S.get('dm-index', 0) + 1);
+  setTimeout(() => {
+    const msg = document.createElement('div');
+    msg.style.cssText = 'position:absolute;bottom:80px;left:24px;right:24px;padding:14px 16px;border:.5px solid var(--accent);background:var(--surface);z-index:40;';
+    msg.innerHTML = `<span style="font-size:var(--fs-xs);letter-spacing:.38em;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:4px">Coming Soon</span>
+      <span style="font-size:var(--fs-sm);letter-spacing:.1em;color:var(--muted)">Premium DM — 課金機能は近日公開予定です</span>`;
+    document.querySelector('.shell').appendChild(msg);
+    setTimeout(() => msg.remove(), 2800);
+  }, 300);
 }
 
 /* ════════════════════════════════════
@@ -1986,6 +2189,7 @@ if (loadSetup()) {
   buildMainScreen();
   initExtraChips();
   applyDeadMode();
+  setTimeout(() => checkDM(false), 1200);
 }
 </script>
 </body>
