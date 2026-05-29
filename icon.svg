@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <rect width="192" height="192" fill="#0A0A08"/>
+  <rect x="10" y="10" width="172" height="172" fill="none" stroke="#C9A46A" stroke-width="0.8"/>
+  <rect x="15" y="15" width="162" height="162" fill="none" stroke="#C9A46A" stroke-width="0.25"/>
+  <text x="103" y="57" font-family="Georgia,serif" font-size="10" fill="#C9A46A" text-anchor="middle" letter-spacing="14">THE</text>
+  <line x1="38" y1="65" x2="154" y2="65" stroke="#C9A46A" stroke-width="0.5"/>
+  <text x="96" y="113" font-family="Georgia,serif" font-size="52" font-weight="700" fill="#F5F1E8" text-anchor="middle" letter-spacing="1">EDIT</text>
+  <line x1="38" y1="125" x2="154" y2="125" stroke="#C9A46A" stroke-width="0.5"/>
+  <text x="101" y="141" font-family="Georgia,serif" font-size="7.5" fill="#C9A46A" text-anchor="middle" letter-spacing="10">BODY</text>
+</svg>

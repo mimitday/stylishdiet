@@ -1,8 +1,10 @@
-const CACHE = 'body-edit-v1';
+const CACHE = 'body-edit-v2';
 const ASSETS = [
   './',
   './index.html',
+  './app/index.html',
   './manifest.json',
+  './icon.svg',
   'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Cormorant:wght@600;700&display=swap'
 ];
 
@@ -31,7 +33,7 @@ self.addEventListener('fetch', e => {
         const clone = res.clone();
         caches.open(CACHE).then(c => c.put(e.request, clone));
         return res;
-      }).catch(() => caches.match('./index.html'));
+      }).catch(() => caches.match('./app/index.html'));
     })
   );
 });
