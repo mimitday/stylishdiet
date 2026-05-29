@@ -582,6 +582,19 @@ body {
 .track-item-bpm { font-size:var(--fs-xs); letter-spacing:.2em; color:var(--muted); text-transform:uppercase; }
 .track-item-play { color:var(--muted); font-size:11px; width:20px; text-align:center; transition:color .2s; }
 .track-item.playing .track-item-play { color:var(--accent); }
+.track-item.locked { border-color:var(--dim); }
+.track-item.locked .track-item-name { color:var(--muted); }
+.track-preview-btn {
+  background:transparent; border:.5px solid var(--border); color:var(--muted);
+  font-size:var(--fs-xs); letter-spacing:.2em; text-transform:uppercase;
+  font-family:'Cormorant Garamond',serif; padding:5px 10px; cursor:pointer; transition:all .2s; white-space:nowrap;
+}
+.track-preview-btn:hover, .track-preview-btn.previewing { border-color:var(--accent); color:var(--accent); }
+.track-unlock-btn {
+  background:var(--accent); border:.5px solid var(--accent); color:#000;
+  font-size:var(--fs-xs); letter-spacing:.2em; text-transform:uppercase;
+  font-family:'Cormorant Garamond',serif; padding:5px 10px; cursor:pointer; white-space:nowrap;
+}
 </style>
 </head>
 <body>
@@ -1619,11 +1632,16 @@ function playTick(accent) {
    MUSIC ENGINE
 ════════════════════════════════════ */
 const MUSIC_TRACKS = [
-  { id:'flow', name:'FLOW STATE',    bpm:132, key:110 },
-  { id:'drop', name:'THE DROP',      bpm:142, key:147 },
-  { id:'hot',  name:'HOT GIRL',      bpm:138, key:165 },
-  { id:'mid',  name:'MIDNIGHT EDIT', bpm:128, key:196 },
-  { id:'glow', name:'GLOW MODE',     bpm:100, key:131 },
+  { id:'flow', name:'FLOW STATE',    bpm:132, key:110, free:true  },
+  { id:'drop', name:'THE DROP',      bpm:142, key:147, free:true  },
+  { id:'hot',  name:'HOT GIRL',      bpm:138, key:165, free:true  },
+  { id:'mid',  name:'MIDNIGHT EDIT', bpm:128, key:196, free:true  },
+  { id:'glow', name:'GLOW MODE',     bpm:100, key:131, free:true  },
+  { id:'dark', name:'DARK RUNWAY',   bpm:140, key:147, free:false, hard:true },
+  { id:'acid', name:'ACID BODY',     bpm:143, key:110, free:false, hard:true },
+  { id:'chro', name:'CHROME',        bpm:148, key:165, free:false, hard:true },
+  { id:'volt', name:'VOLTAGE',       bpm:145, key:196, free:false, hard:true },
+  { id:'aftr', name:'AFTER DARK',    bpm:136, key:131, free:false, hard:true },
 ];
 
 const BASS_PAT = {
@@ -1632,6 +1650,11 @@ const BASS_PAT = {
   hot:  [[0,null,7,null,0,7,3,null],  [0,7,null,7,5,null,3,null]],
   mid:  [[0,null,3,null,7,null,5,null],[0,null,5,null,3,null,7,null]],
   glow: [[0,null,null,7,null,null,5,null],[0,null,null,null,7,null,null,null]],
+  dark: [[0,0,7,null,0,0,5,null],     [0,null,0,0,7,null,5,0]],
+  acid: [[0,0,0,7,0,0,5,5],           [0,0,7,0,5,0,3,0]],
+  chro: [[0,null,0,null,0,null,0,null],[0,null,null,0,0,null,null,0]],
+  volt: [[0,null,7,null,3,0,5,null],  [0,0,7,null,5,null,3,0]],
+  aftr: [[0,null,null,null,5,null,null,null],[0,null,null,7,null,null,5,null]],
 };
 
 const ARP_PAT = {
@@ -1640,6 +1663,7 @@ const ARP_PAT = {
   hot:  [0,4,7,12,7,4,0,4,   3,7,10,15,10,7,3,7],
   mid:  [0,3,7,10,7,3,0,3,   2,5,8,12,8,5,2,5],
   glow: [0,2,4,7,4,2,0,2,    5,7,9,12,9,7,5,7],
+  volt: [0,3,7,10,7,3,0,3,   2,5,7,10,7,5,2,5],
 };
 
 const PAD_CHORDS = {
@@ -1648,10 +1672,13 @@ const PAD_CHORDS = {
   hot:  [[0,4,7],[7,11,14],[5,9,12],[3,7,10]],
   mid:  [[0,3,7],[3,6,10],[10,13,17],[5,8,12]],
   glow: [[0,4,7],[5,9,12],[7,11,14],[5,9,12]],
+  volt: [[0,3,7],[5,8,12],[3,7,10],[8,11,15]],
+  aftr: [[0,3,7],[3,6,10],[8,11,15],[5,8,12]],
 };
 
 let mCtx = null, mGain = null, mPlaying = false;
 let mTrackId = null, mTimer = null, mNextBar = 0, mBar = 0;
+let mPreviewTimer = null, mPreviewing = false;
 
 function semi(f, n) { return f * Math.pow(2, n / 12); }
 
@@ -1691,6 +1718,37 @@ function mHat(t, open) {
   g.gain.exponentialRampToValueAtTime(0.001, t + len);
   src.connect(hpf); hpf.connect(g); g.connect(mGain);
   src.start(t); src.stop(t + len);
+}
+
+function mHardKick(t) {
+  const o = mCtx.createOscillator(), g = mCtx.createGain();
+  o.connect(g); g.connect(mGain);
+  o.frequency.setValueAtTime(220, t);
+  o.frequency.exponentialRampToValueAtTime(42, t + 0.06);
+  g.gain.setValueAtTime(2.0, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+  o.start(t); o.stop(t + 0.28);
+  const c = mCtx.createOscillator(), cg = mCtx.createGain();
+  c.connect(cg); cg.connect(mGain);
+  c.frequency.value = 1400;
+  cg.gain.setValueAtTime(0.8, t);
+  cg.gain.exponentialRampToValueAtTime(0.001, t + 0.012);
+  c.start(t); c.stop(t + 0.012);
+}
+
+function mAcidBass(freq, t, dur) {
+  const o = mCtx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = freq;
+  const lpf = mCtx.createBiquadFilter(); lpf.type = 'lowpass'; lpf.Q.value = 14;
+  lpf.frequency.setValueAtTime(180, t);
+  lpf.frequency.exponentialRampToValueAtTime(3000, t + dur * 0.25);
+  lpf.frequency.exponentialRampToValueAtTime(180, t + dur * 0.9);
+  const g = mCtx.createGain();
+  g.gain.setValueAtTime(0.001, t);
+  g.gain.linearRampToValueAtTime(0.55, t + 0.01);
+  g.gain.setValueAtTime(0.45, t + dur - 0.04);
+  g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  o.connect(lpf); lpf.connect(g); g.connect(mGain);
+  o.start(t); o.stop(t + dur);
 }
 
 function mBass(freq, t, dur) {
@@ -1741,27 +1799,35 @@ function scheduleBar(track, t0) {
   const barLen = beat * 4;
   const bc = mBar % 8;
 
-  // Kick: 4 on the floor
-  for (let i = 0; i < 4; i++) mKick(t0 + i * beat);
+  // Kick
+  const kickFn = track.hard ? mHardKick : mKick;
+  for (let i = 0; i < 4; i++) kickFn(t0 + i * beat);
 
-  // Hi-hat: 8th notes, open on the "and" of 2
+  // Hi-hat: 8th notes, open on "and" of 2; techno adds 16th on upbeats
   for (let i = 0; i < 8; i++) mHat(t0 + i * beat / 2, i === 4);
+  if (track.hard) {
+    for (let i = 0; i < 16; i += 2) mHat(t0 + i * s16, false);
+  }
 
   // Bass
   const bp = BASS_PAT[track.id][bc % 2];
+  const bassFn = track.id === 'acid' ? mAcidBass : mBass;
   bp.forEach((n, i) => {
-    if (n !== null) mBass(semi(track.key, n), t0 + i * beat / 2, beat / 2 * 0.88);
+    if (n !== null) bassFn(semi(track.key, n), t0 + i * beat / 2, beat / 2 * 0.88);
   });
 
-  // Arp: plays on odd bars + always for drop/hot
-  if (bc % 2 === 1 || track.id === 'drop' || track.id === 'hot') {
-    ARP_PAT[track.id].forEach((n, i) => {
+  // Arp
+  const arpPat = ARP_PAT[track.id];
+  if (arpPat && (bc % 2 === 1 || track.id === 'drop' || track.id === 'hot' || track.id === 'volt')) {
+    arpPat.forEach((n, i) => {
       mArp(semi(track.key * 4, n), t0 + i * s16, s16 * 0.82);
     });
   }
 
-  // Pad: chord changes every bar
-  mPad(track.key, PAD_CHORDS[track.id][bc % 4], t0, barLen);
+  // Pad (only for tracks that have it)
+  if (PAD_CHORDS[track.id]) {
+    mPad(track.key, PAD_CHORDS[track.id][bc % 4], t0, barLen);
+  }
 }
 
 function startMusic(id) {
@@ -1813,24 +1879,77 @@ function buildTrackList() {
   if (!list) return;
   list.innerHTML = '';
   MUSIC_TRACKS.forEach((t, i) => {
+    const isPlaying = mTrackId === t.id;
     const el = document.createElement('div');
-    el.className = 'track-item' + (mTrackId === t.id ? ' playing' : '');
+    el.className = 'track-item' + (isPlaying ? ' playing' : '') + (!t.free ? ' locked' : '');
     el.dataset.id = t.id;
-    el.innerHTML = `
-      <div class="track-item-num">${String(i+1).padStart(2,'0')}</div>
-      <div class="track-item-info">
-        <span class="track-item-name">${t.name}</span>
-        <span class="track-item-bpm">${t.bpm} BPM</span>
-      </div>
-      <div class="track-item-play">${mTrackId === t.id ? '■' : '▶'}</div>
-    `;
-    el.addEventListener('click', () => {
-      if (mTrackId === t.id) { stopMusic(); }
-      else { startMusic(t.id); }
-      buildTrackList();
-    });
+
+    if (t.free) {
+      el.innerHTML = `
+        <div class="track-item-num">${String(i+1).padStart(2,'0')}</div>
+        <div class="track-item-info">
+          <span class="track-item-name">${t.name}</span>
+          <span class="track-item-bpm">${t.bpm} BPM</span>
+        </div>
+        <div class="track-item-play">${isPlaying ? '■' : '▶'}</div>
+      `;
+      el.addEventListener('click', () => {
+        if (mTrackId === t.id) stopMusic(); else startMusic(t.id);
+        buildTrackList();
+      });
+    } else {
+      const isPreviewing = isPlaying && mPreviewing;
+      el.innerHTML = `
+        <div class="track-item-num" style="color:var(--border)">🔒</div>
+        <div class="track-item-info">
+          <span class="track-item-name">${t.name}</span>
+          <span class="track-item-bpm">${t.bpm} BPM</span>
+        </div>
+        <div style="display:flex;gap:6px;flex-shrink:0">
+          <button class="track-preview-btn${isPreviewing ? ' previewing' : ''}" data-preview="${t.id}">
+            ${isPreviewing ? '■ Stop' : '▶ 15s'}
+          </button>
+          <button class="track-unlock-btn" data-unlock="${t.id}">Unlock</button>
+        </div>
+      `;
+      el.querySelector('[data-preview]').addEventListener('click', e => {
+        e.stopPropagation();
+        previewTrack(t.id);
+      });
+      el.querySelector('[data-unlock]').addEventListener('click', e => {
+        e.stopPropagation();
+        showUnlockPlaceholder(t.name);
+      });
+    }
     list.appendChild(el);
   });
+}
+
+function showUnlockPlaceholder(name) {
+  const overlay = document.getElementById('track-overlay');
+  const existing = overlay.querySelector('.unlock-msg');
+  if (existing) existing.remove();
+  const msg = document.createElement('div');
+  msg.className = 'unlock-msg';
+  msg.style.cssText = 'padding:16px 24px;border:.5px solid var(--accent);margin:0 24px 12px;';
+  msg.innerHTML = `<span style="font-size:var(--fs-xs);letter-spacing:.38em;color:var(--accent);text-transform:uppercase;display:block;margin-bottom:4px">Coming Soon</span>
+    <span style="font-size:var(--fs-sm);letter-spacing:.1em;color:var(--muted)">${name} — 課金機能は近日公開予定です</span>`;
+  overlay.querySelector('.track-list').before(msg);
+  setTimeout(() => msg.remove(), 3000);
+}
+
+function previewTrack(id) {
+  if (mTrackId === id && mPreviewing) { stopMusic(); return; }
+  mPreviewing = true;
+  startMusic(id);
+  clearTimeout(mPreviewTimer);
+  mPreviewTimer = setTimeout(() => {
+    if (mCtx && mGain) {
+      mGain.gain.linearRampToValueAtTime(0, mCtx.currentTime + 0.8);
+    }
+    setTimeout(() => { stopMusic(); mPreviewing = false; buildTrackList(); }, 900);
+  }, 15000);
+  buildTrackList();
 }
 
 function openMusicOverlay() {
