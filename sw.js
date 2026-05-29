@@ -1,4 +1,4 @@
-const CACHE = 'body-edit-v3';
+const CACHE = 'body-edit-v4';
 const ASSETS = [
   './',
   './index.html',
