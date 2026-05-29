@@ -490,6 +490,98 @@ body {
 .fitbit-title { font-family:'Cormorant',serif; font-size:14px; font-weight:700; color:var(--text); letter-spacing:.06em; text-transform:uppercase; display:block; margin-bottom:2px; transition:color .3s; }
 .fitbit-desc  { font-size:var(--fs-xs); letter-spacing:.16em; color:var(--muted); text-transform:uppercase; display:block; transition:color .3s; }
 .fitbit-lock { border:.5px solid var(--border); background:transparent; color:var(--muted); font-size:7px; letter-spacing:.25em; text-transform:uppercase; font-family:'Cormorant Garamond',serif; padding:6px 10px; cursor:not-allowed; opacity:.4; }
+
+/* ════ SETUP ════ */
+.setup-pad { padding:64px 24px 32px; display:flex; flex-direction:column; height:100%; }
+.setup-head { margin-bottom:48px; }
+.setup-fields { display:flex; flex-direction:column; gap:22px; flex:1; margin-bottom:40px; }
+.setup-field label { display:block; margin-bottom:8px; }
+.setup-input-row { display:flex; border:.5px solid var(--border); height:52px; transition:border-color .2s; }
+.setup-input-row:focus-within { border-color:var(--accent); }
+.setup-input-row input {
+  flex:1; background:transparent; border:none; color:var(--text);
+  font-family:'Cormorant',serif; font-size:24px; font-weight:700;
+  padding:0 14px; outline:none; letter-spacing:.04em; min-width:0;
+}
+.setup-input-row input[type=date] { font-size:16px; font-family:'Cormorant Garamond',serif; }
+.setup-unit { display:flex; align-items:center; padding:0 12px; border-left:.5px solid var(--border); font-size:var(--fs-xs); letter-spacing:.22em; color:var(--muted); text-transform:uppercase; flex-shrink:0; }
+.setup-btn {
+  background:var(--btn-bg); color:var(--btn-txt); border:none; width:100%;
+  padding:16px; font-size:var(--fs-sm); letter-spacing:.32em; text-transform:uppercase;
+  font-family:'Cormorant Garamond',serif; font-weight:600; cursor:pointer;
+}
+.setup-close-btn {
+  background:transparent; border:.5px solid var(--border); color:var(--muted);
+  font-size:var(--fs-xs); letter-spacing:.28em; text-transform:uppercase;
+  font-family:'Cormorant Garamond',serif; padding:12px; cursor:pointer;
+  width:100%; margin-top:8px; transition:all .2s;
+}
+.setup-close-btn:hover { border-color:var(--text); color:var(--text); }
+
+/* ════ STATS ════ */
+.stats-pad { padding:48px 24px 24px; }
+.stats-masthead { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:26px; padding-bottom:18px; border-bottom:.5px solid var(--border); }
+.chart-frame { border:.5px solid var(--border); padding:16px 12px 10px; margin-bottom:14px; position:relative; }
+.chart-frame svg { width:100%; height:90px; display:block; overflow:visible; }
+.chart-empty { font-size:var(--fs-xs); letter-spacing:.2em; color:var(--muted); text-transform:uppercase; text-align:center; padding:24px 0; }
+.log-list-item { display:flex; justify-content:space-between; align-items:baseline; padding:10px 0; border-bottom:.5px solid var(--border); }
+.log-list-date { font-size:var(--fs-sm); letter-spacing:.14em; color:var(--muted); text-transform:uppercase; }
+.log-list-w { font-family:'Cormorant',serif; font-size:20px; font-weight:700; color:var(--text); letter-spacing:.04em; }
+.log-empty { font-size:var(--fs-xs); letter-spacing:.2em; color:var(--muted); text-transform:uppercase; text-align:center; padding:20px 0; }
+.goal-edit-btn {
+  display:block; width:100%; margin-top:24px; margin-bottom:8px;
+  border:.5px solid var(--border); background:transparent; color:var(--muted);
+  font-size:var(--fs-xs); letter-spacing:.32em; text-transform:uppercase;
+  font-family:'Cormorant Garamond',serif; padding:13px; cursor:pointer; text-align:center; transition:all .2s;
+}
+.goal-edit-btn:hover { border-color:var(--text); color:var(--text); }
+
+/* ════ MUSIC ════ */
+.music-toggle-btn {
+  background:transparent; border:.5px solid var(--border); color:var(--muted);
+  font-size:14px; width:28px; height:28px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all .2s; padding:0; line-height:1;
+}
+.music-toggle-btn.playing { border-color:var(--accent); color:var(--accent); }
+
+.track-overlay {
+  position:absolute; inset:0; background:var(--bg);
+  z-index:30; display:none; flex-direction:column; overflow:hidden;
+}
+.track-overlay.show { display:flex; }
+.track-ov-header {
+  padding:48px 24px 18px;
+  display:flex; justify-content:space-between; align-items:center;
+  border-bottom:.5px solid var(--border); flex-shrink:0;
+}
+.track-ov-title { font-size:var(--fs-xs); letter-spacing:.4em; color:var(--accent); text-transform:uppercase; }
+.track-ov-close {
+  background:transparent; border:none; color:var(--muted);
+  font-size:var(--fs-xs); letter-spacing:.28em; text-transform:uppercase;
+  font-family:'Cormorant Garamond',serif; cursor:pointer; padding:0; transition:color .2s;
+}
+.track-ov-close:hover { color:var(--text); }
+.track-list { flex:1; overflow-y:auto; padding:16px 24px; scrollbar-width:none; }
+.track-list::-webkit-scrollbar { display:none; }
+.track-item {
+  display:flex; align-items:center; gap:16px;
+  padding:14px 16px; border:.5px solid var(--border);
+  margin-bottom:6px; cursor:pointer; transition:all .2s;
+}
+.track-item:hover { border-color:var(--muted); }
+.track-item.playing { border-color:var(--accent); }
+.track-item-num { font-size:var(--fs-xs); letter-spacing:.12em; color:var(--muted); min-width:22px; }
+.track-item-info { flex:1; }
+.track-item-name {
+  font-family:'Cormorant',serif; font-size:18px; font-weight:700;
+  color:var(--text); letter-spacing:.06em; text-transform:uppercase; display:block;
+  transition:color .2s;
+}
+.track-item.playing .track-item-name { color:var(--accent); }
+.track-item-bpm { font-size:var(--fs-xs); letter-spacing:.2em; color:var(--muted); text-transform:uppercase; }
+.track-item-play { color:var(--muted); font-size:11px; width:20px; text-align:center; transition:color .2s; }
+.track-item.playing .track-item-play { color:var(--accent); }
 </style>
 </head>
 <body>
@@ -626,12 +718,84 @@ body {
 </div><!-- /main -->
 
 
+<!-- ══════════════════ SETUP SCREEN ══════════════════ -->
+<div class="screen" id="s-setup">
+<div class="setup-pad">
+  <div class="setup-head">
+    <div class="brand">YOUR EDIT</div>
+    <div class="brand-sub">Set your goal to begin</div>
+  </div>
+  <div class="setup-fields">
+    <div class="setup-field">
+      <label class="micro-lbl">Current Weight</label>
+      <div class="setup-input-row">
+        <input type="number" id="setup-cur-w" inputmode="decimal" step="0.1" placeholder="75.0">
+        <div class="setup-unit">KG</div>
+      </div>
+    </div>
+    <div class="setup-field">
+      <label class="micro-lbl">Goal Weight</label>
+      <div class="setup-input-row">
+        <input type="number" id="setup-goal-w" inputmode="decimal" step="0.1" placeholder="65.0">
+        <div class="setup-unit">KG</div>
+      </div>
+    </div>
+    <div class="setup-field">
+      <label class="micro-lbl">Goal Date</label>
+      <div class="setup-input-row">
+        <input type="date" id="setup-goal-date">
+      </div>
+    </div>
+  </div>
+  <button class="setup-btn" onclick="submitSetup()">Start My Edit →</button>
+  <button class="setup-close-btn" id="setup-close-btn" onclick="closeSetup()" style="display:none">Cancel</button>
+</div>
+</div><!-- /setup -->
+
+<!-- ══════════════════ STATS SCREEN ══════════════════ -->
+<div class="screen" id="s-stats">
+<div class="stats-pad">
+  <div class="stats-masthead">
+    <div>
+      <div class="brand">PROGRESS</div>
+      <div class="brand-sub">Weight Journal</div>
+    </div>
+    <div class="mast-date" id="stats-goal-date-label">—</div>
+  </div>
+
+  <div class="prog-frame">
+    <div class="frame-tag">Body Edit</div>
+    <div class="w-trio">
+      <div class="w-big" id="stats-cur-w">—</div>
+      <div class="w-arrow">— TO —</div>
+      <div class="w-big dim" id="stats-goal-w">—</div>
+    </div>
+    <div class="prog-bar">
+      <div class="prog-fill" id="stats-prog-fill" style="width:0%"></div>
+      <div class="prog-dot" id="stats-prog-dot" style="left:calc(0% - 3px)"></div>
+    </div>
+    <div class="prog-note" id="stats-prog-note">—</div>
+  </div>
+
+  <div class="chart-frame">
+    <div class="frame-tag">Weight Chart</div>
+    <div id="weight-chart"></div>
+  </div>
+
+  <span class="micro-lbl" style="margin-bottom:8px;display:block">Weight Log</span>
+  <div id="weight-log-list"></div>
+
+  <button class="goal-edit-btn" onclick="openSetupEdit()">Edit Goal →</button>
+</div>
+</div><!-- /stats -->
+
 <!-- ══════════════════ TIMER SCREEN ══════════════════ -->
 <div class="screen flex-screen" id="s-timer">
 
   <div class="t-header">
     <button class="t-back" onclick="exitTimer()">← Back</button>
     <div class="t-day-tag" id="t-day-tag">—</div>
+    <button class="music-toggle-btn" id="music-toggle-btn" onclick="openMusicOverlay()">♫</button>
   </div>
 
   <div class="t-info">
@@ -761,6 +925,12 @@ body {
     </svg>
     <span>Today</span>
   </button>
+  <button class="nav-btn" id="nav-stats" onclick="showScreen('stats')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+    </svg>
+    <span>Stats</span>
+  </button>
   <button class="nav-btn" id="nav-camera" onclick="showScreen('camera')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
       <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
@@ -769,6 +939,15 @@ body {
     <span>Camera</span>
   </button>
 </nav>
+
+<!-- ══════════════════ TRACK OVERLAY ══════════════════ -->
+<div class="track-overlay" id="track-overlay">
+  <div class="track-ov-header">
+    <span class="track-ov-title">Select Track</span>
+    <button class="track-ov-close" onclick="closeMusicOverlay()">✕ Close</button>
+  </div>
+  <div class="track-list" id="track-list"></div>
+</div>
 
 </div><!-- /shell -->
 
@@ -891,12 +1070,112 @@ function toggleTheme() {
 applyTheme();
 
 /* ════════════════════════════════════
+   SETUP
+════════════════════════════════════ */
+let W_START = 75, W_GOAL = 65;
+let GOAL_DATE = new Date('2026-12-31');
+let DAYS_LEFT = 0;
+
+function loadSetup() {
+  const setup = S.get('setup', null);
+  if (!setup) {
+    document.getElementById('s-setup').classList.add('active');
+    document.querySelector('.nav').style.display = 'none';
+    const d = new Date(); d.setFullYear(d.getFullYear() + 1);
+    document.getElementById('setup-goal-date').value = d.toISOString().slice(0,10);
+    return false;
+  }
+  W_START = parseFloat(setup.startW);
+  W_GOAL  = parseFloat(setup.goalW);
+  GOAL_DATE = new Date(setup.goalDate);
+  DAYS_LEFT = Math.max(0, Math.ceil((GOAL_DATE - new Date()) / 86400000));
+  return true;
+}
+
+function submitSetup() {
+  const curW  = parseFloat(document.getElementById('setup-cur-w').value);
+  const goalW = parseFloat(document.getElementById('setup-goal-w').value);
+  const goalDate = document.getElementById('setup-goal-date').value;
+  if (isNaN(curW) || isNaN(goalW) || !goalDate) return;
+  S.set('setup', { startW: curW, goalW, goalDate });
+  if (!S.get('weight', null)) {
+    S.set('weight', curW);
+    S.set('weight-hist', [{ date: new Date().toDateString(), w: curW }]);
+  }
+  location.reload();
+}
+
+function openSetupEdit() {
+  const setup = S.get('setup', {});
+  document.getElementById('setup-cur-w').value   = setup.startW || '';
+  document.getElementById('setup-goal-w').value  = setup.goalW  || '';
+  document.getElementById('setup-goal-date').value = setup.goalDate || '';
+  document.getElementById('setup-close-btn').style.display = 'block';
+  document.getElementById('s-setup').classList.add('active');
+}
+
+function closeSetup() {
+  document.getElementById('s-setup').classList.remove('active');
+}
+
+/* ════════════════════════════════════
+   STATS
+════════════════════════════════════ */
+function buildStatsScreen() {
+  const curW = S.get('weight', W_START);
+  const pct  = Math.min(100, Math.max(0, ((W_START - curW) / (W_START - W_GOAL)) * 100));
+  const lost = (W_START - curW).toFixed(1);
+  const goalFmt = `${String(GOAL_DATE.getDate()).padStart(2,'0')}.${String(GOAL_DATE.getMonth()+1).padStart(2,'0')}.${GOAL_DATE.getFullYear()}`;
+
+  document.getElementById('stats-cur-w').textContent = curW.toFixed(1);
+  document.getElementById('stats-goal-w').textContent = W_GOAL.toFixed(1);
+  document.getElementById('stats-prog-fill').style.width = pct + '%';
+  document.getElementById('stats-prog-dot').style.left = `calc(${pct}% - 3px)`;
+  document.getElementById('stats-prog-note').textContent = `−${lost} KG · FROM ${W_START} TO ${W_GOAL}`;
+  document.getElementById('stats-goal-date-label').textContent = `GOAL · ${goalFmt}`;
+
+  const hist = S.get('weight-hist', []);
+  const chart = document.getElementById('weight-chart');
+  if (hist.length < 2) {
+    chart.innerHTML = '<div class="chart-empty">体重を2回以上記録するとグラフが表示されます</div>';
+  } else {
+    const pts  = hist.slice(-30);
+    const ws   = pts.map(h => h.w);
+    const minW = Math.min(...ws, W_GOAL) - 0.5;
+    const maxW = Math.max(...ws) + 0.5;
+    const W = 300, H = 90;
+    const px = i => (i / Math.max(pts.length - 1, 1)) * W;
+    const py = w => H - ((w - minW) / (maxW - minW)) * H;
+    const goalY = py(W_GOAL);
+    const polyPts = pts.map((h, i) => `${px(i)},${py(h.w)}`).join(' ');
+    const dots = pts.map((h, i) => `<circle cx="${px(i)}" cy="${py(h.w)}" r="2.5" fill="var(--accent)"/>`).join('');
+    chart.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      <line x1="0" y1="${goalY}" x2="${W}" y2="${goalY}" stroke="var(--accent)" stroke-width="0.5" stroke-dasharray="4,2" opacity="0.5"/>
+      <polyline points="${polyPts}" fill="none" stroke="var(--text)" stroke-width="1.5" stroke-linejoin="round"/>
+      ${dots}
+    </svg>`;
+  }
+
+  const logEl = document.getElementById('weight-log-list');
+  if (hist.length === 0) {
+    logEl.innerHTML = '<div class="log-empty">No entries yet</div>';
+  } else {
+    logEl.innerHTML = [...hist].reverse().slice(0, 30).map(h => {
+      const d = new Date(h.date);
+      const ds = `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getFullYear()).slice(-2)}`;
+      return `<div class="log-list-item">
+        <span class="log-list-date">${ds}</span>
+        <span class="log-list-w">${h.w.toFixed(1)} <span style="font-size:var(--fs-xs);color:var(--muted)">KG</span></span>
+      </div>`;
+    }).join('');
+  }
+}
+
+/* ════════════════════════════════════
    DATE & SCHEDULE
 ════════════════════════════════════ */
 const TODAY   = new Date();
 const TODAY_S = TODAY.toDateString();
-const GOAL    = new Date('2025-07-05');
-const DAYS_LEFT = Math.max(0, Math.ceil((GOAL - TODAY) / 86400000));
 
 const DAYS  = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
 const MONTHS= ['01','02','03','04','05','06','07','08','09','10','11','12'];
@@ -1085,13 +1364,15 @@ function logDamage(what, action) {
    SCREEN ROUTING
 ════════════════════════════════════ */
 function showScreen(name) {
-  ['main','timer','camera'].forEach(s => {
+  ['main','timer','camera','stats'].forEach(s => {
     document.getElementById('s-'+s).classList.remove('active');
   });
-  document.getElementById('nav-home').classList.remove('active');
-  document.getElementById('nav-camera').classList.remove('active');
+  ['nav-home','nav-stats','nav-camera'].forEach(id => {
+    document.getElementById(id).classList.remove('active');
+  });
   document.getElementById('s-'+name).classList.add('active');
   if (name === 'main')   document.getElementById('nav-home').classList.add('active');
+  if (name === 'stats')  { document.getElementById('nav-stats').classList.add('active'); buildStatsScreen(); }
   if (name === 'camera') document.getElementById('nav-camera').classList.add('active');
   if (name !== 'timer')  stopTimer();
 }
@@ -1264,6 +1545,7 @@ function finishSession() {
 }
 
 function completeSession() {
+  stopMusic();
   if (currentDayNum === 'CARE') { startCareSession(); }
   else { buildMissionList(); }
   showScreen('main');
@@ -1271,6 +1553,7 @@ function completeSession() {
 
 function exitTimer() {
   stopTimer();
+  stopMusic();
   if (currentDayNum === 'CARE') { startCareSession(); }
   else { buildMissionList(); }
   showScreen('main');
@@ -1333,6 +1616,232 @@ function playTick(accent) {
 }
 
 /* ════════════════════════════════════
+   MUSIC ENGINE
+════════════════════════════════════ */
+const MUSIC_TRACKS = [
+  { id:'flow', name:'FLOW STATE',    bpm:132, key:110 },
+  { id:'drop', name:'THE DROP',      bpm:142, key:147 },
+  { id:'hot',  name:'HOT GIRL',      bpm:138, key:165 },
+  { id:'mid',  name:'MIDNIGHT EDIT', bpm:128, key:196 },
+  { id:'glow', name:'GLOW MODE',     bpm:100, key:131 },
+];
+
+const BASS_PAT = {
+  flow: [[0,null,7,null,3,null,5,null],[0,null,5,null,7,null,3,null]],
+  drop: [[0,null,0,7,0,null,5,null],  [0,null,7,null,5,3,0,null]],
+  hot:  [[0,null,7,null,0,7,3,null],  [0,7,null,7,5,null,3,null]],
+  mid:  [[0,null,3,null,7,null,5,null],[0,null,5,null,3,null,7,null]],
+  glow: [[0,null,null,7,null,null,5,null],[0,null,null,null,7,null,null,null]],
+};
+
+const ARP_PAT = {
+  flow: [0,3,7,12,10,7,3,0,  5,8,12,15,12,8,5,3],
+  drop: [0,7,12,7,0,7,12,7,  5,10,15,10,5,10,15,17],
+  hot:  [0,4,7,12,7,4,0,4,   3,7,10,15,10,7,3,7],
+  mid:  [0,3,7,10,7,3,0,3,   2,5,8,12,8,5,2,5],
+  glow: [0,2,4,7,4,2,0,2,    5,7,9,12,9,7,5,7],
+};
+
+const PAD_CHORDS = {
+  flow: [[0,3,7],[-4,0,3],[3,7,10],[-2,2,5]],
+  drop: [[0,3,7],[5,8,12],[3,7,10],[8,11,15]],
+  hot:  [[0,4,7],[7,11,14],[5,9,12],[3,7,10]],
+  mid:  [[0,3,7],[3,6,10],[10,13,17],[5,8,12]],
+  glow: [[0,4,7],[5,9,12],[7,11,14],[5,9,12]],
+};
+
+let mCtx = null, mGain = null, mPlaying = false;
+let mTrackId = null, mTimer = null, mNextBar = 0, mBar = 0;
+
+function semi(f, n) { return f * Math.pow(2, n / 12); }
+
+function initMCtx() {
+  if (mCtx) return;
+  mCtx = new (window.AudioContext || window.webkitAudioContext)();
+  mGain = mCtx.createGain();
+  mGain.gain.value = 0.72;
+  mGain.connect(mCtx.destination);
+}
+
+function mKick(t) {
+  const o = mCtx.createOscillator(), g = mCtx.createGain();
+  o.connect(g); g.connect(mGain);
+  o.frequency.setValueAtTime(180, t);
+  o.frequency.exponentialRampToValueAtTime(48, t + 0.09);
+  g.gain.setValueAtTime(1.3, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.38);
+  o.start(t); o.stop(t + 0.38);
+  const c = mCtx.createOscillator(), cg = mCtx.createGain();
+  c.connect(cg); cg.connect(mGain);
+  c.frequency.value = 900;
+  cg.gain.setValueAtTime(0.5, t);
+  cg.gain.exponentialRampToValueAtTime(0.001, t + 0.018);
+  c.start(t); c.stop(t + 0.018);
+}
+
+function mHat(t, open) {
+  const len = open ? 0.12 : 0.035;
+  const buf = mCtx.createBuffer(1, mCtx.sampleRate * len, mCtx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const src = mCtx.createBufferSource(); src.buffer = buf;
+  const hpf = mCtx.createBiquadFilter(); hpf.type = 'highpass'; hpf.frequency.value = 7500;
+  const g = mCtx.createGain();
+  g.gain.setValueAtTime(open ? 0.22 : 0.1, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + len);
+  src.connect(hpf); hpf.connect(g); g.connect(mGain);
+  src.start(t); src.stop(t + len);
+}
+
+function mBass(freq, t, dur) {
+  const o = mCtx.createOscillator(); o.type = 'sawtooth'; o.frequency.value = freq;
+  const lpf = mCtx.createBiquadFilter(); lpf.type = 'lowpass';
+  lpf.frequency.setValueAtTime(700, t);
+  lpf.frequency.exponentialRampToValueAtTime(320, t + 0.12);
+  const g = mCtx.createGain();
+  g.gain.setValueAtTime(0.001, t);
+  g.gain.linearRampToValueAtTime(0.48, t + 0.015);
+  g.gain.setValueAtTime(0.42, t + dur - 0.05);
+  g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  o.connect(lpf); lpf.connect(g); g.connect(mGain);
+  o.start(t); o.stop(t + dur);
+}
+
+function mArp(freq, t, dur) {
+  const o = mCtx.createOscillator(); o.type = 'square'; o.frequency.value = freq;
+  const bpf = mCtx.createBiquadFilter(); bpf.type = 'bandpass';
+  bpf.frequency.value = 2200; bpf.Q.value = 2.5;
+  const g = mCtx.createGain();
+  g.gain.setValueAtTime(0.055, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + dur * 0.88);
+  o.connect(bpf); bpf.connect(g); g.connect(mGain);
+  o.start(t); o.stop(t + dur);
+}
+
+function mPad(baseFreq, chord, t, dur) {
+  chord.forEach(n => {
+    const freq = semi(baseFreq * 2, n);
+    [-0.12, 0, 0.12].forEach(det => {
+      const o = mCtx.createOscillator(); o.type = 'sine';
+      o.frequency.value = freq; o.detune.value = det * 100;
+      const g = mCtx.createGain();
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.017, t + 0.9);
+      g.gain.setValueAtTime(0.017, t + dur - 0.9);
+      g.gain.linearRampToValueAtTime(0, t + dur);
+      o.connect(g); g.connect(mGain);
+      o.start(t); o.stop(t + dur);
+    });
+  });
+}
+
+function scheduleBar(track, t0) {
+  const beat = 60 / track.bpm;
+  const s16  = beat / 4;
+  const barLen = beat * 4;
+  const bc = mBar % 8;
+
+  // Kick: 4 on the floor
+  for (let i = 0; i < 4; i++) mKick(t0 + i * beat);
+
+  // Hi-hat: 8th notes, open on the "and" of 2
+  for (let i = 0; i < 8; i++) mHat(t0 + i * beat / 2, i === 4);
+
+  // Bass
+  const bp = BASS_PAT[track.id][bc % 2];
+  bp.forEach((n, i) => {
+    if (n !== null) mBass(semi(track.key, n), t0 + i * beat / 2, beat / 2 * 0.88);
+  });
+
+  // Arp: plays on odd bars + always for drop/hot
+  if (bc % 2 === 1 || track.id === 'drop' || track.id === 'hot') {
+    ARP_PAT[track.id].forEach((n, i) => {
+      mArp(semi(track.key * 4, n), t0 + i * s16, s16 * 0.82);
+    });
+  }
+
+  // Pad: chord changes every bar
+  mPad(track.key, PAD_CHORDS[track.id][bc % 4], t0, barLen);
+}
+
+function startMusic(id) {
+  // 完全に止めてからコンテキストを作り直す
+  stopMusic(false);
+  mCtx = new (window.AudioContext || window.webkitAudioContext)();
+  mGain = mCtx.createGain();
+  mGain.gain.value = 0.72;
+  mGain.connect(mCtx.destination);
+
+  mTrackId = id; mPlaying = true; mBar = 0;
+  const track = MUSIC_TRACKS.find(t => t.id === id);
+  mNextBar = mCtx.currentTime + 0.05;
+
+  const tick = () => {
+    if (!mPlaying || mTrackId !== id) return;
+    const barLen = (60 / track.bpm) * 4;
+    while (mNextBar < mCtx.currentTime + barLen * 2) {
+      scheduleBar(track, mNextBar);
+      mNextBar += barLen; mBar++;
+    }
+    mTimer = setTimeout(tick, 80);
+  };
+  tick();
+  updateMusicUI();
+}
+
+function stopMusic(updateUI = true) {
+  clearTimeout(mTimer);
+  mPlaying = false; mTrackId = null;
+  if (mCtx) {
+    try { mCtx.close(); } catch(e) {}
+    mCtx = null; mGain = null;
+  }
+  if (updateUI) updateMusicUI();
+}
+
+function updateMusicUI() {
+  const btn = document.getElementById('music-toggle-btn');
+  if (btn) btn.classList.toggle('playing', mPlaying);
+  document.querySelectorAll('.track-item').forEach(el => {
+    el.classList.toggle('playing', el.dataset.id === mTrackId);
+    el.querySelector('.track-item-play').textContent = el.dataset.id === mTrackId ? '■' : '▶';
+  });
+}
+
+function buildTrackList() {
+  const list = document.getElementById('track-list');
+  if (!list) return;
+  list.innerHTML = '';
+  MUSIC_TRACKS.forEach((t, i) => {
+    const el = document.createElement('div');
+    el.className = 'track-item' + (mTrackId === t.id ? ' playing' : '');
+    el.dataset.id = t.id;
+    el.innerHTML = `
+      <div class="track-item-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="track-item-info">
+        <span class="track-item-name">${t.name}</span>
+        <span class="track-item-bpm">${t.bpm} BPM</span>
+      </div>
+      <div class="track-item-play">${mTrackId === t.id ? '■' : '▶'}</div>
+    `;
+    el.addEventListener('click', () => {
+      if (mTrackId === t.id) { stopMusic(); }
+      else { startMusic(t.id); }
+      buildTrackList();
+    });
+    list.appendChild(el);
+  });
+}
+
+function openMusicOverlay() {
+  buildTrackList();
+  document.getElementById('track-overlay').classList.add('show');
+}
+function closeMusicOverlay() {
+  document.getElementById('track-overlay').classList.remove('show');
+}
+
+/* ════════════════════════════════════
    SERVICE WORKER
 ════════════════════════════════════ */
 if ('serviceWorker' in navigator) {
@@ -1344,9 +1853,21 @@ if ('serviceWorker' in navigator) {
 /* ════════════════════════════════════
    INIT
 ════════════════════════════════════ */
-buildMainScreen();
-initExtraChips();
-applyDeadMode();
+if (loadSetup()) {
+  const goalFmt = `${String(GOAL_DATE.getMonth()+1).padStart(2,'0')}.${String(GOAL_DATE.getDate()).padStart(2,'0')}`;
+  document.getElementById('days-left').textContent = DAYS_LEFT;
+  document.querySelector('.count-until').textContent = 'days until';
+  document.querySelector('.count-trgt').textContent  = goalFmt;
+  document.querySelector('.micro-lbl').textContent   = `Days Until ${goalFmt}`;
+  document.getElementById('prog-note').textContent   = `— KG · FROM ${W_START} TO ${W_GOAL}`;
+  const goalWEl = document.querySelector('.w-big.dim');
+  if (goalWEl) goalWEl.textContent = W_GOAL.toFixed(1);
+  const savedW = S.get('weight', W_START);
+  updateProgress(savedW);
+  buildMainScreen();
+  initExtraChips();
+  applyDeadMode();
+}
 </script>
 </body>
 </html>
