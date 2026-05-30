@@ -1371,6 +1371,16 @@ function buildMissionList() {
   const list = document.getElementById('mission-list');
   list.innerHTML = '';
 
+  const resume = S.get('resume', null);
+  if (resume && resume.date === TODAY_S && resume.dayNum === programDay && resume.exIdx < exes.length) {
+    const btn = document.createElement('button');
+    btn.className = 'setup-btn';
+    btn.style.cssText = 'margin-bottom:12px;letter-spacing:.28em;font-size:10px;';
+    btn.textContent = `Resume → ${exes[resume.exIdx].name}`;
+    btn.addEventListener('click', () => startSession(resume.exIdx));
+    list.appendChild(btn);
+  }
+
   exes.forEach((ex, i) => {
     const isDone = done.includes(ex.id);
     const card   = document.createElement('div');
@@ -1616,6 +1626,7 @@ function finishSession() {
 
 function completeSession() {
   stopMusic();
+  S.set('resume', null);
   if (currentDayNum === 'CARE') { startCareSession(); }
   else { buildMissionList(); }
   showScreen('main');
@@ -1625,6 +1636,9 @@ function completeSession() {
 function exitTimer() {
   stopTimer();
   stopMusic();
+  if (currentDayNum !== 'CARE') {
+    S.set('resume', { dayNum: currentDayNum, exIdx: timerExIdx, date: TODAY_S });
+  }
   if (currentDayNum === 'CARE') { startCareSession(); }
   else { buildMissionList(); }
   showScreen('main');
