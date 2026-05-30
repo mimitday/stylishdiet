@@ -2246,7 +2246,13 @@ function closeMusicOverlay() {
   let adminTimer = null;
   const brand = document.querySelector('#s-main .brand');
   if (!brand) return;
-  const activate = () => {
+  brand.style.userSelect = 'none';
+  brand.style.webkitUserSelect = 'none';
+  brand.addEventListener('contextmenu', e => e.preventDefault());
+
+  const activate = e => {
+    e.preventDefault();
+    clearTimeout(adminTimer);
     adminTimer = setTimeout(() => {
       const next = !S.get('admin', false);
       S.set('admin', next);
@@ -2257,7 +2263,7 @@ function closeMusicOverlay() {
     }, 7000);
   };
   brand.addEventListener('pointerdown', activate);
-  ['pointerup','pointerleave','touchend'].forEach(e => brand.addEventListener(e, () => clearTimeout(adminTimer)));
+  ['pointerup','pointerleave','pointercancel','touchend'].forEach(e => brand.addEventListener(e, () => clearTimeout(adminTimer)));
 })();
 
 /* ════════════════════════════════════
