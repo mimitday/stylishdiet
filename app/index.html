@@ -844,7 +844,7 @@ body {
   <div class="t-header">
     <button class="t-back" onclick="exitTimer()">← Back</button>
     <div class="t-day-tag" id="t-day-tag">—</div>
-    <button class="music-toggle-btn" id="music-toggle-btn" onclick="openMusicOverlay()">♫</button>
+    <button class="music-toggle-btn" id="music-toggle-btn" onclick="toggleAutoMusic()">♫</button>
   </div>
 
   <div class="t-info">
@@ -1030,68 +1030,153 @@ body {
 ════════════════════════════════════ */
 const PROGRAM = {
   1: {
-    name: 'LOWER EDIT',
-    goal: '下半身・くびれ',
+    name: 'SILHOUETTE & CORE',
+    goal: '体幹・フロントライン',
     exercises: [
-      { id:'w1', name:'WARM UP',         phase:'Intro',    desc:'軽く揺れる・呼吸を整える',  beats:['揺れる','キープ','逆側','戻る'],       dur:60,  bpm:0   },
-      { id:'e1', name:'SIDE FLOW',       phase:'Flow',     desc:'4拍で左右へ流れる',          beats:['左へ','キープ','右へ','戻る'],         dur:180, bpm:132 },
-      { id:'e2', name:'COSMIC LUNGE',    phase:'Build',    desc:'腕は上へ伸ばす',             beats:['右ランジ','戻る','左ランジ','戻る'],   dur:120, bpm:128 },
-      { id:'e3', name:'HIP WAVE',        phase:'Drop',     desc:'腰を左右へ流す',             beats:['左へ流す','キープ','右へ流す','戻る'], dur:150, bpm:132 },
-      { id:'e4', name:'WIDE SQUAT FLOW', phase:'Build',    desc:'浅めスクワット・流れるように', beats:['下げる','止める','上がる','揺れる'],  dur:120, bpm:128 },
-      { id:'e5', name:'TWIST DANCE',     phase:'Drop',     desc:'くびれをツイスト',           beats:['右へひねる','キープ','左へひねる','戻る'], dur:150, bpm:132 },
-      { id:'e6', name:'FORM ROLLER',     phase:'Cooldown', desc:'脚全体をゆっくり転がす',     beats:['転がす','キープ','逆側','呼吸'],      dur:180, bpm:0   },
+      { id:'d1e1',  name:'NECK LINE ROLL',    phase:'Intro',    desc:'首をゆっくり回す',           beats:['首を右へ倒す','あごを引いて下を通る','首を左へ倒す','正面を向く'],                                         dur:30, bpm:104 },
+      { id:'d1e2',  name:'SHOULDER FRAME',    phase:'Intro',    desc:'肩を大きく回す',             beats:['肩を前へ出す','肩を上へ上げる','肩を後ろへ引く','肩を下ろす'],                                             dur:30, bpm:104 },
+      { id:'d1e3',  name:'RIB SIDE REACH',    phase:'Intro',    desc:'肋骨を横に伸ばす',           beats:['右手を左斜め上へ伸ばす','右の脇腹を伸ばす','左手を右斜め上へ伸ばす','左の脇腹を伸ばす'],                   dur:30, bpm:104 },
+      { id:'d1e4',  name:'HIP CIRCLE SOFT',   phase:'Intro',    desc:'腰を小さく回す',             beats:['腰を右へ出す','腰を後ろへ引く','腰を左へ出す','腰を前へ出す'],                                             dur:30, bpm:104 },
+      { id:'d1e5',  name:'SIDE SLIDE',        phase:'Flow',     desc:'横へなめらかに移動',         beats:['右足を右横へステップ','左足を右足へ引き寄せる','左足を左横へステップ','右足を左足へ引き寄せる'],             dur:30, bpm:128 },
+      { id:'d1e6',  name:'VOGUE ARMS',        phase:'Flow',     desc:'腕でフレームを作る',         beats:['右手を顔の横へ置く','左手を顔の横で交差する','両手を上へまっすぐ伸ばす','両手を外側へ広げて下ろす'],       dur:30, bpm:128 },
+      { id:'d1e7',  name:'LATIN HIP TAP',     phase:'Flow',     desc:'腰を横に押す',               beats:['右腰を右へ突き出す','右つま先を床へタップ','左腰を左へ突き出す','左つま先を床へタップ'],                   dur:30, bpm:130 },
+      { id:'d1e8',  name:'CHEST POP SOFT',    phase:'Flow',     desc:'胸を軽く押し出す',           beats:['胸を前へ突き出す','胸を後ろへ引き込む','両肩を後ろへ引く','背筋をまっすぐ伸ばす'],                         dur:30, bpm:130 },
+      { id:'d1e9',  name:'DIAGONAL REACH',    phase:'Drop',     desc:'斜め上へ伸びる',             beats:['右手を左斜め上へ突く','左足を後ろでクロスする','左手を右斜め上へ突く','右足を後ろでクロスする'],             dur:30, bpm:132 },
+      { id:'d1e10', name:'RUNWAY TURN',       phase:'Flow',     desc:'小さく向きを変える',         beats:['右足を一歩前へ踏み出す','体を右へひねる','左足を一歩前へ踏み出す','体を正面へ戻す'],                       dur:30, bpm:128 },
+      { id:'d1e11', name:'ARM SWEEP LOW',     phase:'Flow',     desc:'腕を低く流す',               beats:['右腕を斜め下へ払う','右腕を右下へ戻す','左腕を斜め下へ払う','左腕を左下へ戻す'],                           dur:30, bpm:126 },
+      { id:'d1e12', name:'POSE AND SLIDE',    phase:'Drop',     desc:'ポーズして横移動',           beats:['お尻を右へ落とす','右手を腰に当てる','お尻を左へ落とす','左手を腰に当てる'],                               dur:30, bpm:132 },
+      { id:'d1e13', name:'STANDING CRUNCH',   phase:'Build',    desc:'立ったまま腹筋',             beats:['右膝を胸の前へ上げる','両手で右膝をタッチする','左膝を胸の前へ上げる','両手で左膝をタッチする'],           dur:30, bpm:116 },
+      { id:'d1e14', name:'SIDE CRUNCH',       phase:'Build',    desc:'脇腹を縮める',               beats:['右肘を右腰へ近づける','右の脇腹をギュッと縮める','左肘を左腰へ近づける','左の脇腹をギュッと縮める'],       dur:30, bpm:116 },
+      { id:'d1e15', name:'WAIST TWIST SMALL', phase:'Build',    desc:'腰を小さくひねる',           beats:['上体だけを右へひねる','正面へ戻す','上体だけを左へひねる','正面へ戻す'],                                   dur:30, bpm:118 },
+      { id:'d1e16', name:'WOOD CHOP SOFT',    phase:'Build',    desc:'斜めに下ろす',               beats:['両手を右上へ構える','両手を左下へ振り下ろす','両手を左上へ構える','両手を右下へ振り下ろす'],               dur:30, bpm:114 },
+      { id:'d1e17', name:'SIDE PLANK STAND',  phase:'Build',    desc:'立ったまま横腹',             beats:['右手を頭の後ろへ置く','上体を左へ倒して右脇を伸ばす','左手を頭の後ろへ置く','上体を右へ倒して左脇を伸ばす'], dur:30, bpm:108 },
+      { id:'d1e18', name:'PELVIC TILT',       phase:'Build',    desc:'骨盤を整える',               beats:['お尻を後ろへ突き出す','下腹を前へ押し出す','お尻の穴をギュッと締める','お腹を限界まで凹ませる'],           dur:30, bpm:104 },
+      { id:'d1e19', name:'TWIST PRESS',       phase:'Build',    desc:'ひねって押す',               beats:['両手を右へ強く押し出す','上体を右へひねる','両手を左へ強く押し出す','上体を左へひねる'],                   dur:30, bpm:112 },
+      { id:'d1e20', name:'CORE BRACE HOLD',   phase:'Build',    desc:'お腹を固める',               beats:['息を吐いてお腹を凹ませる','背筋を上に引き上げる','お腹に力を入れて固める','そのまま姿勢をキープする'],     dur:30, bpm:112 },
+      { id:'d1e21', name:'HAMSTRING REACH',   phase:'Cooldown', desc:'もも裏を伸ばす',             beats:['右かかとを前についてつま先を上げる','お尻を後ろへ引いて太もも裏を伸ばす','左かかとを前についてつま先を上げる','お尻を後ろへ引いて太もも裏を伸ばす'], dur:30, bpm:90 },
+      { id:'d1e22', name:'CHEST OPEN',        phase:'Cooldown', desc:'胸を開く',                   beats:['両手を後ろへ回して組む','拳を後ろに引いて胸を開く','肩を下ろす','首を長く伸ばす'],                         dur:30, bpm:90 },
+      { id:'d1e23', name:'SIDE BODY HOLD',    phase:'Cooldown', desc:'体側を伸ばす',               beats:['右手を上へ伸ばして上体を左へ倒す','そのままキープ','左手を上へ伸ばして上体を右へ倒す','そのままキープ'],   dur:30, bpm:88 },
+      { id:'d1e24', name:'BREATH RESET',      phase:'Cooldown', desc:'呼吸を整える',               beats:['鼻から息を深く吸う','肩の力を抜く','口から息をゆっくり吐く','お腹を緩める'],                               dur:30, bpm:90 },
     ]
   },
   2: {
-    name: 'CORE EDIT',
-    goal: 'お腹・姿勢・体幹',
+    name: 'BACK LINE & GLUTE',
+    goal: 'お尻と後ろ姿',
     exercises: [
-      { id:'w2', name:'WARM UP',        phase:'Intro',    desc:'呼吸・背筋を整える',          beats:['吸う','キープ','吐く','整える'],       dur:60,  bpm:0   },
-      { id:'e7', name:'BODY WAVE',      phase:'Flow',     desc:'胸→お腹→腰へ波を流す',        beats:['胸から','お腹へ','腰へ','戻る'],      dur:180, bpm:128 },
-      { id:'e8', name:'STANDING ABS',   phase:'Build',    desc:'肘と膝を近づける',            beats:['右肘膝','戻る','左肘膝','戻る'],      dur:120, bpm:132 },
-      { id:'e9', name:'GALAXY TWIST',   phase:'Drop',     desc:'上半身を大きくツイスト',      beats:['右へ','キープ','左へ','戻る'],        dur:150, bpm:132 },
-      { id:'ea', name:'PILATES BREATH', phase:'Build',    desc:'呼吸と姿勢を意識して',        beats:['吸い込む','キープ','吐き出す','整える'], dur:120, bpm:0 },
-      { id:'eb', name:'ARM FLOW',       phase:'Drop',     desc:'腕を大きく流すように',        beats:['上へ','横へ','下へ','流れる'],        dur:150, bpm:132 },
-      { id:'ec', name:'KASSA',          phase:'Cooldown', desc:'かっさでリンパを流す',        beats:['流す','キープ','逆側','呼吸'],        dur:180, bpm:0   },
+      { id:'d2e1',  name:'ANKLE WAKE',        phase:'Intro',    desc:'足首を動かす',               beats:['右つま先を上へ上げる','右つま先を下へ伸ばす','左つま先を上へ上げる','左つま先を下へ伸ばす'],               dur:30, bpm:100 },
+      { id:'d2e2',  name:'WAIST CLOCK',       phase:'Intro',    desc:'腰を時計方向へ',             beats:['腰を前へ出す','腰を右へ出す','腰を後ろへ引く','腰を左へ出す'],                                             dur:30, bpm:100 },
+      { id:'d2e3',  name:'KNEE SOFTEN',       phase:'Intro',    desc:'膝をやわらかく',             beats:['右膝を軽く緩める','右膝をまっすぐ伸ばす','左膝を軽く緩める','左膝をまっすぐ伸ばす'],                       dur:30, bpm:100 },
+      { id:'d2e4',  name:'LOW BACK RESET',    phase:'Intro',    desc:'腰をゆるめる',               beats:['お尻を後ろへ突き出す','お腹の力を抜く','下腹を前へ押し出す','お尻をギュッと締める'],                       dur:30, bpm:100 },
+      { id:'d2e5',  name:'MAMBO FRONT',       phase:'Flow',     desc:'前へ軽く踏む',               beats:['右足を一歩前へ踏み出す','右足を元の位置に戻す','左足を一歩前へ踏み出す','左足を元の位置に戻す'],           dur:30, bpm:128 },
+      { id:'d2e6',  name:'SALSA SIDE TAP',    phase:'Flow',     desc:'横にタップする',             beats:['右足を右横へステップ','右腰を右へ突き出す','左足を左横へステップ','左腰を左へ突き出す'],                   dur:30, bpm:130 },
+      { id:'d2e7',  name:'HIP FIGURE EIGHT',  phase:'Drop',     desc:'腰で8の字',                  beats:['右腰を斜め前へ回す','そのまま後ろへ引く','左腰を斜め前へ回す','そのまま後ろへ引く'],                       dur:30, bpm:132 },
+      { id:'d2e8',  name:'SIDE ROCK',         phase:'Flow',     desc:'左右に揺れる',               beats:['体重を右足に乗せる','右腰を外へ押し出す','体重を左足に乗せる','左腰を外へ押し出す'],                       dur:30, bpm:126 },
+      { id:'d2e9',  name:'LOW GROOVE',        phase:'Drop',     desc:'低めに揺れる',               beats:['腰の位置を少し低く落とす','腰を右へスライド','腰の位置を少し低く落とす','腰を左へスライド'],               dur:30, bpm:130 },
+      { id:'d2e10', name:'BACK STEP SWEEP',   phase:'Flow',     desc:'後ろへ流す',                 beats:['右足を後ろへ引く','右手を前へ伸ばす','左足を後ろへ引く','左手を前へ伸ばす'],                               dur:30, bpm:126 },
+      { id:'d2e11', name:'HIP DROP',          phase:'Flow',     desc:'腰を落とす',                 beats:['右腰をガクッと下へ落とす','右の脇腹を伸ばす','左腰をガクッと下へ落とす','左の脇腹を伸ばす'],               dur:30, bpm:126 },
+      { id:'d2e12', name:'LATIN BACK TAP',    phase:'Flow',     desc:'後ろに軽くタップ',           beats:['右つま先を後ろへタップ','右のお尻を後ろへ引く','左つま先を後ろへタップ','左のお尻を後ろへ引く'],           dur:30, bpm:128 },
+      { id:'d2e13', name:'BACK LEG TAP',      phase:'Build',    desc:'脚を後ろに引く',             beats:['右足を後ろへ遠く伸ばす','右のお尻を強く締める','左足を後ろへ遠く伸ばす','左のお尻を強く締める'],           dur:30, bpm:116 },
+      { id:'d2e14', name:'GLUTE SQUEEZE',     phase:'Build',    desc:'お尻を締める',               beats:['両方のかかとを強く寄せる','お尻の穴を思い切り締める','骨盤をまっすぐ立てる','お尻の硬さをキープする'],     dur:30, bpm:112 },
+      { id:'d2e15', name:'BOOTY DIAGONAL',    phase:'Build',    desc:'脚を斜め後ろへ',             beats:['右足を斜め後ろへ伸ばす','右お尻の外側を締める','左足を斜め後ろへ伸ばす','左お尻の外側を締める'],           dur:30, bpm:114 },
+      { id:'d2e16', name:'BALANCE REACH',     phase:'Build',    desc:'片足で軽く伸びる',           beats:['右手を前、左足を後ろへ伸ばす','バランスを取る','左手を前、右足を後ろへ伸ばす','バランスを取る'],           dur:30, bpm:108 },
+      { id:'d2e17', name:'GLUTE SIDE BACK',   phase:'Build',    desc:'お尻を横後ろへ',             beats:['右足を斜め後ろへ出す','右のお尻に体重を乗せる','左足を斜め後ろへ出す','左のお尻に体重を乗せる'],           dur:30, bpm:112 },
+      { id:'d2e18', name:'CHAIR SQUAT SOFT',  phase:'Build',    desc:'浅めスクワット',             beats:['お尻を後ろへ引いて少ししゃがむ','胸は正面に向けたままキープ','足の裏全体で床を押して立つ','お尻をキュッと締める'], dur:30, bpm:118 },
+      { id:'d2e19', name:'SLOW SIDE LUNGE',   phase:'Build',    desc:'浅く横に沈む',               beats:['お尻を右斜め後ろへ引く','右のもも裏に体重を乗せる','お尻を左斜め後ろへ引く','左のもも裏に体重を乗せる'],   dur:30, bpm:112 },
+      { id:'d2e20', name:'POSTURE FINISH',    phase:'Build',    desc:'姿勢を保つ',                 beats:['頭を上に引き上げる','肩の力を抜いて下ろす','お尻を軽く締める','床をしっかり踏む'],                         dur:30, bpm:112 },
+      { id:'d2e21', name:'HIP FLEXOR SOFT',   phase:'Cooldown', desc:'股関節前を伸ばす',           beats:['右足を大きく後ろへ引く','腰を前に押し出して付け根を伸ばす','左足を大きく後ろへ引く','腰を前に押し出して付け根を伸ばす'], dur:30, bpm:88 },
+      { id:'d2e22', name:'WAIST RELEASE',     phase:'Cooldown', desc:'腰まわりを緩める',           beats:['腰を右横へ大きく突き出す','そのままキープ','腰を左横へ大きく突き出す','そのままキープ'],                   dur:30, bpm:88 },
+      { id:'d2e23', name:'HIP AND HAM RELEASE', phase:'Cooldown', desc:'腰ともも裏を伸ばす',       beats:['右かかとを前についてお尻を引く','もも裏を伸ばす','左かかとを前についてお尻を引く','もも裏を伸ばす'],       dur:30, bpm:88 },
+      { id:'d2e24', name:'SLOW BREATH',       phase:'Cooldown', desc:'ゆっくり呼吸',               beats:['息を吸いながら両手を上へ','肩の力を抜く','息を吐きながら両手を下ろす','全身を緩める'],                     dur:30, bpm:88 },
     ]
   },
   3: {
-    name: 'TRANCE CARDIO',
-    goal: '汗・有酸素',
+    name: 'HIGH MODE UPPER',
+    goal: 'デコルテ・背中・二の腕',
     exercises: [
-      { id:'w3', name:'WARM UP',          phase:'Intro',    desc:'体を起こす・リズムに乗る',  beats:['揺れる','キープ','逆側','整える'],       dur:60,  bpm:128 },
-      { id:'ed', name:'BOXING FLOW',      phase:'Flow',     desc:'リズムよくパンチ',          beats:['右パンチ','ガード','左パンチ','ガード'], dur:180, bpm:140 },
-      { id:'ee', name:'SIDE STEP DANCE',  phase:'Flow',     desc:'横移動・ステップ',          beats:['右へ','キープ','左へ','戻る'],          dur:150, bpm:132 },
-      { id:'ef', name:'KNEE FLOW',        phase:'Build',    desc:'軽い膝上げ（ジャンプなし）', beats:['右膝','戻る','左膝','戻る'],           dur:150, bpm:132 },
-      { id:'eg', name:'FAST ARM COMBO',   phase:'Drop',     desc:'腕を大きく動かす',          beats:['上へ','横へ','引く','戻る'],           dur:150, bpm:140 },
-      { id:'eh', name:'TRANCE DANCE',     phase:'Drop',     desc:'自由に踊る・感じるままに',  beats:['流れる','感じる','踊る','解放'],       dur:180, bpm:132 },
-      { id:'ei', name:'COOLDOWN',         phase:'Cooldown', desc:'伸ばす・整える・呼吸',      beats:['伸ばす','キープ','逆側','呼吸'],       dur:120, bpm:0   },
+      { id:'d3e1',  name:'SPINE WAVE',        phase:'Intro',    desc:'背骨を波のように',           beats:['背中を丸める','背中をまっすぐに戻す','胸を斜め上へ張る','肩を下ろす'],                                     dur:30, bpm:100 },
+      { id:'d3e2',  name:'ARM CIRCLE WIDE',   phase:'Intro',    desc:'腕を広く回す',               beats:['右腕を前から上へ回す','右腕を後ろから下へ下ろす','左腕を前から上へ回す','左腕を後ろから下へ下ろす'],       dur:30, bpm:102 },
+      { id:'d3e3',  name:'RIB BREATH',        phase:'Intro',    desc:'肋骨に呼吸',                 beats:['胸を大きく大きく広げる','息を深く吸う','胸を小さくすぼめる','息を全て吐き出す'],                           dur:30, bpm:100 },
+      { id:'d3e4',  name:'WRIST STYLE',       phase:'Intro',    desc:'手首をほぐす',               beats:['右手首を外へ回す','右手首を内へ回す','左手首を外へ回す','左手首を内へ回す'],                               dur:30, bpm:96  },
+      { id:'d3e5',  name:'RIB ISOLATION',     phase:'Flow',     desc:'肋骨だけ動かす',             beats:['胸だけを右へスライドする','腰は動かさずキープ','胸だけを左へスライドする','腰は動かさずキープ'],           dur:30, bpm:126 },
+      { id:'d3e6',  name:'LOW ARM WAVE',      phase:'Flow',     desc:'腕を波のように',             beats:['右手を下から柔らかく上げる','右肘を外に張って下ろす','左手を下から柔らかく上げる','左肘を外に張って下ろす'], dur:30, bpm:126 },
+      { id:'d3e7',  name:'DIAGONAL PULL',     phase:'Flow',     desc:'斜めに引く',                 beats:['右手を左斜め上へ伸ばす','右肘を後ろへ強く引く','左手を右斜め上へ伸ばす','左肘を後ろへ強く引く'],           dur:30, bpm:128 },
+      { id:'d3e8',  name:'FAN ARMS',          phase:'Flow',     desc:'腕を扇形に広げる',           beats:['右腕を横に大きく開く','体を右へ向ける','左腕を横に大きく開く','体を左へ向ける'],                           dur:30, bpm:126 },
+      { id:'d3e9',  name:'SHOULDER STYLE',    phase:'Flow',     desc:'肩でリズム',                 beats:['右肩を前へ出す','右肩を後ろへ引く','左肩を前へ出す','左肩を後ろへ引く'],                                   dur:30, bpm:124 },
+      { id:'d3e10', name:'CHEST CIRCLE',      phase:'Flow',     desc:'胸を小さく回す',             beats:['胸を右へ出す','胸を前へ出す','胸を左へ出す','胸を後ろへ引く'],                                             dur:30, bpm:124 },
+      { id:'d3e11', name:'ARM CUTS',          phase:'Drop',     desc:'腕で空間を切る',             beats:['右手を左へ素早く振る','右手を右へ切り返す','左手を右へ素早く振る','左手を左へ切り返す'],                   dur:30, bpm:132 },
+      { id:'d3e12', name:'DOUBLE FRAME',      phase:'Flow',     desc:'両腕でフレーム',             beats:['両手を顔の前へ集める','両肘を横にパッと開く','両手を胸の前へ下ろす','肩をストンと下ろす'],                 dur:30, bpm:126 },
+      { id:'d3e13', name:'BACK ROW',          phase:'Build',    desc:'背中を寄せる',               beats:['両肘を後ろへ強く引く','肩甲骨をギュッと寄せる','両手を前へ伸ばす','力を緩める'],                           dur:30, bpm:114 },
+      { id:'d3e14', name:'ARM PRESS OUT',     phase:'Build',    desc:'腕を前に押す',               beats:['両手のひらで前を強く押す','肩を下ろす','両手を胸の前へ引き戻す','背中を寄せる'],                           dur:30, bpm:116 },
+      { id:'d3e15', name:'WALL PUSH AIR',     phase:'Build',    desc:'空気を押す',                 beats:['右手を前に強く押し出す','右肩を後ろに引く','左手を前に強く押し出す','左肩を後ろに引く'],                   dur:30, bpm:114 },
+      { id:'d3e16', name:'ARM HALO',          phase:'Build',    desc:'頭の周りで腕回し',           beats:['両手を右上へ上げる','頭の後ろを通す','両手を左上へ持っていく','胸の前へ下ろす'],                           dur:30, bpm:112 },
+      { id:'d3e17', name:'LOW ROW SQUEEZE',   phase:'Build',    desc:'背中を締める',               beats:['両肘を脇腹に引き寄せる','脇をギュッと締める','両手を斜め下へ伸ばす','胸を張る'],                           dur:30, bpm:112 },
+      { id:'d3e18', name:'ARM HOLD BURN',     phase:'Build',    desc:'腕を横で保つ',               beats:['両腕を真横にしっかり伸ばす','肩を下ろす','指先を遠くへ伸ばす','そのままキープする'],                       dur:30, bpm:112 },
+      { id:'d3e19', name:'ARM PULSE SIDE',    phase:'Build',    desc:'腕を横で小さく動かす',       beats:['腕を横に伸ばしたまま','手のひらを上に向けて小さく揺らす','手のひらを下に向けて小さく揺らす','高さをキープする'], dur:30, bpm:112 },
+      { id:'d3e20', name:'CORE SIDE PRESS',   phase:'Build',    desc:'横腹を押す',                 beats:['右手を右横へ強く押す','右の脇腹をギュッと縮める','左手を左横へ強く押す','左の脇腹をギュッと縮める'],       dur:30, bpm:112 },
+      { id:'d3e21', name:'BACK ROUND OPEN',   phase:'Cooldown', desc:'背中を丸めて開く',           beats:['前で手を組んで背中を丸める','息を吐く','肘を後ろに引いて胸を開く','息を吸う'],                             dur:30, bpm:88  },
+      { id:'d3e22', name:'SHOULDER RELEASE',  phase:'Cooldown', desc:'肩をゆるめる',               beats:['右肩を下ろして首を左に倒す','そのままキープ','左肩を下ろして首を右に倒す','そのままキープ'],               dur:30, bpm:84  },
+      { id:'d3e23', name:'WRIST RELEASE',     phase:'Cooldown', desc:'手首を伸ばす',               beats:['右の手のひらを前に向けて指を下に引く','手首を伸ばす','左の手のひらを前に向けて指を下に引く','手首を伸ばす'], dur:30, bpm:84  },
+      { id:'d3e24', name:'EDITORIAL BREATH',  phase:'Cooldown', desc:'静かに終える',               beats:['両手を外から上へ上げる','息を深く吸う','両手をゆっくり下ろす','息を全部吐く'],                             dur:30, bpm:84  },
     ]
   },
   4: {
-    name: 'BODY LINE EDIT',
-    goal: '姿勢・ライン',
+    name: 'LEGS & INNER THIGH',
+    goal: '美脚ライン',
     exercises: [
-      { id:'w4', name:'WARM UP',          phase:'Intro',    desc:'背筋・姿勢を意識して',      beats:['伸びる','キープ','解放','整える'],       dur:60,  bpm:0   },
-      { id:'ej', name:'MODEL WALK',       phase:'Flow',     desc:'その場でモデルウォーク',    beats:['右足','キープ','左足','流れる'],         dur:180, bpm:128 },
-      { id:'ek', name:'BACK OPEN',        phase:'Build',    desc:'肩を開く・胸を張る',        beats:['開く','キープ','閉じる','整える'],       dur:120, bpm:128 },
-      { id:'el', name:'INNER THIGH FLOW', phase:'Build',    desc:'内もも・意識して動かす',    beats:['引き寄せ','キープ','逆側','戻る'],       dur:150, bpm:128 },
-      { id:'em', name:'GLUTE FLOW',       phase:'Drop',     desc:'お尻を意識して動かす',      beats:['引き締め','キープ','解放','流れる'],     dur:150, bpm:132 },
-      { id:'en', name:'SLOW TURN',        phase:'Drop',     desc:'ゆっくり回転・全体を感じる', beats:['回り始め','キープ','続ける','止まる'], dur:120, bpm:0   },
-      { id:'eo', name:'FORM ROLLER',      phase:'Cooldown', desc:'背中をゆっくり転がす',      beats:['転がす','キープ','移動','呼吸'],         dur:180, bpm:0   },
+      { id:'d4e1',  name:'POSTURE CHECK',     phase:'Intro',    desc:'姿勢を整える',               beats:['頭を上に引き上げる','肩を下ろす','お腹を引っ込める','まっすぐ立つ'],                                       dur:30, bpm:100 },
+      { id:'d4e2',  name:'HEEL TOE ROLL',     phase:'Intro',    desc:'足裏を使う',                 beats:['右足のかかとをつく','右足のつま先をつく','左足のかかとをつく','左足のつま先をつく'],                       dur:30, bpm:100 },
+      { id:'d4e3',  name:'INNER THIGH OPEN',  phase:'Intro',    desc:'内ももを開く',               beats:['右膝を外へ開く','正面に戻す','左膝を外へ開く','正面に戻す'],                                               dur:30, bpm:102 },
+      { id:'d4e4',  name:'SOFT PLIÉ',         phase:'Intro',    desc:'軽く膝を曲げる',             beats:['つま先を外にして膝を曲げる','腰を真下へ落とす','膝をまっすぐ伸ばす','元の姿勢に戻る'],                     dur:30, bpm:100 },
+      { id:'d4e5',  name:'CROSS TAP',         phase:'Flow',     desc:'斜め前へタップ',             beats:['右足を左斜め前へ出す','右手を左へ伸ばす','左足を右斜め前へ出す','左手を右へ伸ばす'],                       dur:30, bpm:126 },
+      { id:'d4e6',  name:'MERENGUE HIP',      phase:'Flow',     desc:'腰を小さく左右へ',           beats:['右腰を上へ引き上げる','左腰を下げる','左腰を上へ引き上げる','右腰を下げる'],                               dur:30, bpm:128 },
+      { id:'d4e7',  name:'CATWALK SIDE',      phase:'Flow',     desc:'横に歩く風',                 beats:['右足を右へ一歩出す','左足を右足の前で交差する','左足を左へ一歩出す','右足を左足の前で交差する'],           dur:30, bpm:126 },
+      { id:'d4e8',  name:'TANGO SIDE DRAG',   phase:'Flow',     desc:'足を引き寄せる',             beats:['右足を右へ大きく踏み出す','左足を床にすりながら寄せる','左足を左へ大きく踏み出す','右足を床にすりながら寄せる'], dur:30, bpm:124 },
+      { id:'d4e9',  name:'CURVE WALK',        phase:'Flow',     desc:'曲線で歩く風',               beats:['右足を左前へなめらかに出す','左足を右前へなめらかに出す','右足を左前へなめらかに出す','左足を右前へなめらかに出す'], dur:30, bpm:126 },
+      { id:'d4e10', name:'WAIST POSE DROP',   phase:'Drop',     desc:'腰で決める',                 beats:['腰を右へ強く出す','右手を上へピシッと掲げる','腰を左へ強く出す','左手を上へピシッと掲げる'],               dur:30, bpm:132 },
+      { id:'d4e11', name:'GLOBAL SIDE STEP',  phase:'Flow',     desc:'横へ大きく動く',             beats:['右足を右へ大きく出す','右手を上へ伸ばす','左足を左へ大きく出す','左手を上へ伸ばす'],                       dur:30, bpm:128 },
+      { id:'d4e12', name:'FINAL DROP POSE',   phase:'Drop',     desc:'最後に決める',               beats:['右足を右へ大きく開く','右手を斜め上へ出す','左足を左へ大きく開く','左手を斜め上へ出す'],                   dur:30, bpm:132 },
+      { id:'d4e13', name:'SIDE LEG LIFT',     phase:'Build',    desc:'脚を横に上げる',             beats:['右脚を真横へまっすぐ上げる','足を床へ静かに戻す','左脚を真横へまっすぐ上げる','足を床へ静かに戻す'],       dur:30, bpm:116 },
+      { id:'d4e14', name:'CALF RAISE LINE',   phase:'Build',    desc:'かかとを上げる',             beats:['両足のかかとを真上へ上げる','お腹を凹ませる','かかとを静かに下ろす','姿勢をキープする'],                   dur:30, bpm:112 },
+      { id:'d4e15', name:'SUMO PULSE SOFT',   phase:'Build',    desc:'浅くワイドで沈む',           beats:['足を広く開いてつま先を外にする','お尻を真下に少し落とす','少し弾むように小さく上下する','内ももを意識する'], dur:30, bpm:112 },
+      { id:'d4e16', name:'INNER LEG TAP',     phase:'Build',    desc:'内ももを使う',               beats:['右足を左斜め前へ滑らせる','内ももをすり合わせるように締める','左足を右斜め前へ滑らせる','内ももをすり合わせるように締める'], dur:30, bpm:112 },
+      { id:'d4e17', name:'CALF BALANCE',      phase:'Build',    desc:'ふくらはぎと姿勢',           beats:['かかとを高く上げる','両腕を真横に広げる','バランスをキープする','かかとを下ろす'],                         dur:30, bpm:110 },
+      { id:'d4e18', name:'THIGH PRESS OUT',   phase:'Build',    desc:'膝を外に押す',               beats:['膝を少し曲げて外に開く','足裏で床をグッと押す','内ももを伸ばす','膝を伸ばして戻る'],                       dur:30, bpm:112 },
+      { id:'d4e19', name:'STANDING CLAM',     phase:'Build',    desc:'股関節を開く',               beats:['右膝だけを外へ開く','骨盤は正面を向けたまま固定','左膝だけを外へ開く','骨盤は正面を向けたまま固定'],       dur:30, bpm:112 },
+      { id:'d4e20', name:'LEG LINE HOLD',     phase:'Build',    desc:'脚線を保つ',                 beats:['右脚を横に伸ばしたままキープ','腰を水平に保つ','左脚を横に伸ばしたままキープ','腰を水平に保つ'],           dur:30, bpm:112 },
+      { id:'d4e21', name:'INNER THIGH STRETCH', phase:'Cooldown', desc:'内ももを伸ばす',           beats:['右膝を曲げて左の内ももを伸ばす','そのままキープ','左膝を曲げて右の内ももを伸ばす','そのままキープ'],       dur:30, bpm:88  },
+      { id:'d4e22', name:'CALF RELEASE',      phase:'Cooldown', desc:'ふくらはぎを伸ばす',         beats:['右足を後ろに引いてかかとを床につける','ふくらはぎを伸ばす','左足を後ろに引いてかかとを床につける','ふくらはぎを伸ばす'], dur:30, bpm:88  },
+      { id:'d4e23', name:'LEG SHAKE OUT',     phase:'Cooldown', desc:'脚をゆるめる',               beats:['右足を前に出してぶらぶら振る','力を抜く','左足を前に出してぶらぶら振る','力を抜く'],                       dur:30, bpm:88  },
+      { id:'d4e24', name:'CHEST AND BACK RESET', phase:'Cooldown', desc:'胸と背中を整える',        beats:['両手を前で組んで背中を丸める','大きく息を吐く','両手を後ろに引いて胸を開く','大きく息を吸う'],             dur:30, bpm:88  },
     ]
   },
   5: {
-    name: 'HOT GIRL MODE',
-    goal: '全部入り',
+    name: 'TOTAL COORDINATION',
+    goal: '全身の連動と脂肪燃焼',
     exercises: [
-      { id:'w5', name:'WARM UP',       phase:'Intro',    desc:'エンジンをかける',           beats:['揺れる','キープ','逆側','整える'],        dur:60,  bpm:132 },
-      { id:'ep', name:'LUNGE COMBO',   phase:'Flow',     desc:'ランジ連続・リズムよく',     beats:['右ランジ','戻る','左ランジ','戻る'],      dur:150, bpm:132 },
-      { id:'eq', name:'SQUAT FLOW',    phase:'Build',    desc:'スクワット・流れるように',   beats:['下げる','止める','上がる','揺れる'],      dur:120, bpm:128 },
-      { id:'er', name:'BOXING DANCE',  phase:'Drop',     desc:'ボクササイズ・ダンスで',     beats:['右パンチ','ステップ','左パンチ','ステップ'], dur:180, bpm:140 },
-      { id:'es', name:'WAIST TWIST',   phase:'Drop',     desc:'くびれを意識してツイスト',   beats:['右へ','キープ','左へ','戻る'],            dur:150, bpm:132 },
-      { id:'et', name:'FREE DANCE',    phase:'Drop',     desc:'好きに踊る・感じるままに',   beats:['流れる','感じる','踊る','解放'],          dur:180, bpm:132 },
-      { id:'eu', name:'COOLDOWN',      phase:'Cooldown', desc:'伸ばす・整える',             beats:['伸ばす','キープ','逆側','呼吸'],          dur:120, bpm:0   },
+      { id:'d5e1',  name:'FULL BODY WAKE',    phase:'Intro',    desc:'全身を起こす',               beats:['両手を上へ伸ばす','背伸びをする','両手を横から下ろす','肩の力を抜く'],                                     dur:30, bpm:102 },
+      { id:'d5e2',  name:'HIP AND RIB RESET', phase:'Intro',    desc:'腰と肋骨を整える',           beats:['腰を右へスライドする','胸を左へスライドする','腰を左へスライドする','胸を右へスライドする'],               dur:30, bpm:102 },
+      { id:'d5e3',  name:'SIDE BEND WARM',    phase:'Intro',    desc:'脇腹を温める',               beats:['右肘を上へ引き上げて左へ倒れる','体を戻す','左肘を上へ引き上げて右へ倒れる','体を戻す'],                 dur:30, bpm:102 },
+      { id:'d5e4',  name:'BREATH LIFT',       phase:'Intro',    desc:'呼吸で伸びる',               beats:['息を深く吸いながら背筋を伸ばす','キープする','息を深く吐きながら肩を下ろす','リラックスする'],             dur:30, bpm:102 },
+      { id:'d5e5',  name:'CROSS BODY REACH',  phase:'Flow',     desc:'体を斜めに伸ばす',           beats:['右手を左斜め上へ遠く伸ばす','左足をつま先立ちにする','左手を右斜め上へ遠く伸ばす','右足をつま先立ちにする'], dur:30, bpm:128 },
+      { id:'d5e6',  name:'HIP AND ARM COMBO', phase:'Flow',     desc:'腰と腕を合わせる',           beats:['右腰を右へ突き出す','左手を上へまっすぐ上げる','左腰を左へ突き出す','右手を上へまっすぐ上げる'],           dur:30, bpm:130 },
+      { id:'d5e7',  name:'RUNWAY SWAY',       phase:'Flow',     desc:'モデル風に揺れる',           beats:['右足に体重を乗せて胸を右へ','左足に体重を乗せて胸を左へ','右足に体重を乗せて胸を右へ','左足に体重を乗せて胸を左へ'], dur:30, bpm:126 },
+      { id:'d5e8',  name:'DROP ARM STRIKE',   phase:'Drop',     desc:'腕を強く出す',               beats:['右足を右へ踏み出す','右手を前に強く突く','左足を左へ踏み出す','左手を前に強く突く'],                       dur:30, bpm:132 },
+      { id:'d5e9',  name:'EDITOR STEP',       phase:'Flow',     desc:'斜めに踏む',                 beats:['右足を斜め前へステップ','右手を胸の前へ水平に置く','左足を斜め前へステップ','左手を胸の前へ水平に置く'],   dur:30, bpm:126 },
+      { id:'d5e10', name:'VOGUE BOX',         phase:'Flow',     desc:'四角い腕ポーズ',             beats:['右肘を真横に張る','右手を顔の前でカチッと止める','左肘を真横に張る','左手を顔の前でカチッと止める'],       dur:30, bpm:126 },
+      { id:'d5e11', name:'FINAL WALK POSE',   phase:'Drop',     desc:'歩いてポーズ',               beats:['右足を前へ強く踏み出す','左手を腰に当てる','左足を前へ強く踏み出す','右手を上へピシッと掲げる'],           dur:30, bpm:130 },
+      { id:'d5e12', name:'FRAME FREEZE',      phase:'Drop',     desc:'止まって決める',             beats:['右手首を額の前で固定する','上体を右へ傾けてポーズ','左手首を額の前で固定する','上体を左へ傾けてポーズ'],   dur:30, bpm:132 },
+      { id:'d5e13', name:'SQUAT TO REACH',    phase:'Build',    desc:'浅く沈んで伸びる',           beats:['お尻を後ろに引いて少ししゃがむ','両手を前へ伸ばす','立ち上がりながら両手を上へ伸ばす','お尻を締める'],     dur:30, bpm:114 },
+      { id:'d5e14', name:'SIDE LEG AND ARM',  phase:'Build',    desc:'横脚と腕',                   beats:['右脚を真横に上げる','左手を上へまっすぐ伸ばす','左脚を真横に上げる','右手を上へまっすぐ伸ばす'],           dur:30, bpm:114 },
+      { id:'d5e15', name:'BACK TAP ROW',      phase:'Build',    desc:'背中とお尻',                 beats:['右足を後ろへ遠く引く','両肘を後ろへグッと寄せる','左足を後ろへ遠く引く','両肘を後ろへグッと寄せる'],       dur:30, bpm:114 },
+      { id:'d5e16', name:'STAND BICYCLE',     phase:'Build',    desc:'立ったまま斜め腹筋',         beats:['右膝を左斜め上へ高く上げる','左肘を右膝に近づけてお腹をひねる','左膝を右斜め上へ高く上げる','右肘を左膝に近づけてお腹をひねる'], dur:30, bpm:116 },
+      { id:'d5e17', name:'CORE MARCH SLOW',   phase:'Build',    desc:'体幹で膝上げ',               beats:['右膝をまっすぐ上へ上げる','お腹に力を入れてキープ','左膝をまっすぐ上へ上げる','お腹に力を入れてキープ'],   dur:30, bpm:112 },
+      { id:'d5e18', name:'SLOW KICK FRONT',   phase:'Build',    desc:'前に低く蹴る',               beats:['右足を前に低く蹴り出す','太ももの前側を意識する','左足を前に低く蹴り出す','太ももの前側を意識する'],       dur:30, bpm:112 },
+      { id:'d5e19', name:'KNEE OPEN LIFT',    phase:'Build',    desc:'膝を外に開く',               beats:['右膝を外側へ高く上げる','脇腹とお腹を締める','左膝を外側へ高く上げる','脇腹とお腹を締める'],               dur:30, bpm:116 },
+      { id:'d5e20', name:'ARM PRESS LOW',     phase:'Build',    desc:'腕を下に押す',               beats:['両手のひらで真下を強く押す','二の腕の後ろ側をギュッと締める','両手を胸の前へ戻す','背筋を上に伸ばす'],   dur:30, bpm:112 },
+      { id:'d5e21', name:'FULL SIDE STRETCH', phase:'Cooldown', desc:'全身を横に伸ばす',           beats:['右手を上へ伸ばして体を左へ倒す','そのままキープ','左手を上へ伸ばして体を右へ倒す','そのままキープ'],       dur:30, bpm:88  },
+      { id:'d5e22', name:'SPINE ROLL DOWN',   phase:'Cooldown', desc:'背骨をゆっくり下げる',       beats:['頭を下げて背中を丸めながらしゃがむ','力を完全に抜く','足裏で床を押してゆっくり立ち上がる','背筋を伸ばす'], dur:30, bpm:84  },
+      { id:'d5e23', name:'QUAD SOFT STRETCH', phase:'Cooldown', desc:'前ももを伸ばす',             beats:['右足首を後ろで掴んで太もも前を伸ばす','そのままキープ','左足首を後ろで掴んで太もも前を伸ばす','そのままキープ'], dur:30, bpm:88  },
+      { id:'d5e24', name:'ISSUE CLOSED',      phase:'Cooldown', desc:'静かに終了',                 beats:['息を深く吸う','背筋を伸ばす','息を深く吐く','全身の力を抜く'],                                             dur:30, bpm:88  },
     ]
   }
 };
@@ -1371,33 +1456,66 @@ function buildMissionList() {
   const list = document.getElementById('mission-list');
   list.innerHTML = '';
 
-  const resume = S.get('resume', null);
-  if (resume && resume.date === TODAY_S && resume.dayNum === programDay && resume.exIdx < exes.length) {
-    const btn = document.createElement('button');
-    btn.className = 'setup-btn';
-    btn.style.cssText = 'margin-bottom:12px;letter-spacing:.28em;font-size:10px;';
-    btn.textContent = `Resume → ${exes[resume.exIdx].name}`;
-    btn.addEventListener('click', () => startSession(resume.exIdx));
-    list.appendChild(btn);
+  if (deadMode) {
+    const resume = S.get('resume', null);
+    if (resume && resume.date === TODAY_S && resume.dayNum === programDay && !resume.phase && resume.exIdx < exes.length) {
+      const btn = document.createElement('button');
+      btn.className = 'setup-btn';
+      btn.style.cssText = 'margin-bottom:12px;letter-spacing:.28em;font-size:10px;';
+      btn.textContent = `Resume → ${exes[resume.exIdx].name}`;
+      btn.addEventListener('click', () => startSession(resume.exIdx));
+      list.appendChild(btn);
+    }
+    exes.forEach((ex, i) => {
+      const isDone = done.includes(ex.id);
+      const card   = document.createElement('div');
+      card.className = 'mission' + (isDone ? ' done' : '');
+      card.id = 'mc-' + ex.id;
+      card.innerHTML = `
+        <div class="m-idx"><span class="m-idx-t">${String(i+1).padStart(3,'0')}</span></div>
+        <div class="m-body">
+          <span class="m-phase" data-phase="${ex.phase}">${ex.phase.toUpperCase()}</span>
+          <span class="m-name">${ex.name}</span>
+          <span class="m-dur">${Math.round(ex.dur/60)} MIN · ${ex.bpm > 0 ? ex.bpm+' BPM' : 'NO BEAT'}</span>
+        </div>
+        <div class="m-cta"><button class="m-btn">${isDone ? 'Done' : 'Go'}</button></div>
+      `;
+      if (!isDone) card.addEventListener('click', () => startSession(i));
+      list.appendChild(card);
+    });
+    return;
   }
 
-  exes.forEach((ex, i) => {
-    const isDone = done.includes(ex.id);
-    const card   = document.createElement('div');
-    card.className = 'mission' + (isDone ? ' done' : '');
-    card.id = 'mc-' + ex.id;
+  const resume = S.get('resume', null);
+  if (resume && resume.date === TODAY_S && resume.dayNum === programDay && resume.phase) {
+    const phaseExes = exes.filter(e => e.phase === resume.phase);
+    if (resume.exIdx < phaseExes.length) {
+      const btn = document.createElement('button');
+      btn.className = 'setup-btn';
+      btn.style.cssText = 'margin-bottom:12px;letter-spacing:.28em;font-size:10px;';
+      btn.textContent = `Resume → ${resume.phase.toUpperCase()} (${resume.exIdx + 1} / ${phaseExes.length})`;
+      btn.addEventListener('click', () => startPhaseSession(resume.phase, resume.exIdx));
+      list.appendChild(btn);
+    }
+  }
+
+  ['Intro', 'Flow', 'Drop', 'Build', 'Cooldown'].forEach((phase, i) => {
+    const phaseExes = exes.filter(e => e.phase === phase);
+    if (phaseExes.length === 0) return;
+    const allDone = phaseExes.every(e => done.includes(e.id));
+    const durMin  = Math.round(phaseExes.reduce((s, e) => s + e.dur, 0) / 60);
+    const card    = document.createElement('div');
+    card.className = 'mission' + (allDone ? ' done' : '');
     card.innerHTML = `
       <div class="m-idx"><span class="m-idx-t">${String(i+1).padStart(3,'0')}</span></div>
       <div class="m-body">
-        <span class="m-phase" data-phase="${ex.phase}">${ex.phase.toUpperCase()}</span>
-        <span class="m-name">${ex.name}</span>
-        <span class="m-dur">${Math.round(ex.dur/60)} MIN · ${ex.bpm > 0 ? ex.bpm+' BPM' : 'NO BEAT'}</span>
+        <span class="m-phase" data-phase="${phase}">${phase.toUpperCase()}</span>
+        <span class="m-name">${phaseExes.length} EXERCISES</span>
+        <span class="m-dur">${durMin} MIN</span>
       </div>
-      <div class="m-cta"><button class="m-btn">${isDone ? 'Done' : 'Go'}</button></div>
+      <div class="m-cta"><button class="m-btn">${allDone ? 'Done' : 'Go'}</button></div>
     `;
-    if (!isDone) {
-      card.addEventListener('click', () => startSession(i));
-    }
+    if (!allDone) card.addEventListener('click', () => startPhaseSession(phase, 0));
     list.appendChild(card);
   });
 }
@@ -1471,6 +1589,7 @@ let isPaused         = false;
 let metronomeOn      = false;
 let audioCtx         = null;
 let currentDayNum    = 1;
+let timerPhase       = null;
 
 function startCareSession() {
   document.getElementById('rest-day-view').classList.remove('show');
@@ -1506,6 +1625,8 @@ function startCareSession() {
 
 function startCareTimer(startIdx) {
   timerExercises = SELF_CARE.exercises;
+  timerPhase     = null;
+  mAutoOn        = false;
   currentDayNum  = 'CARE';
   timerExIdx     = startIdx;
   isPaused       = false;
@@ -1519,9 +1640,30 @@ function startCareTimer(startIdx) {
   startTicker();
 }
 
+function startPhaseSession(phase, startIdx) {
+  const day = (programDay !== 'CARE') ? PROGRAM[programDay] : null;
+  timerExercises = day ? day.exercises.filter(e => e.phase === phase) : [];
+  timerPhase     = phase;
+  currentDayNum  = programDay !== 'CARE' ? programDay : 1;
+  timerExIdx     = startIdx;
+  isPaused       = false;
+  metronomeOn    = false;
+  mAutoIdx       = 0;
+  mAutoOn        = true;
+  document.getElementById('done-ov').classList.remove('show');
+  document.getElementById('bpm-btn').classList.remove('on');
+  showScreen('timer');
+  document.getElementById('nav-home').classList.add('active');
+  document.getElementById('nav-camera').classList.remove('active');
+  loadExercise();
+  startTicker();
+}
+
 function startSession(startIdx) {
   const day  = (programDay !== 'CARE') ? PROGRAM[programDay] : null;
   timerExercises = deadMode ? DEAD_EXERCISES : (day ? day.exercises : []);
+  timerPhase     = null;
+  mAutoOn        = false;
   currentDayNum  = programDay !== 'CARE' ? programDay : 1;
   timerExIdx     = startIdx;
   isPaused       = false;
@@ -1535,8 +1677,31 @@ function startSession(startIdx) {
   startTicker();
 }
 
+function getAvailableTracks() {
+  const adminOn = S.get('admin', false);
+  return MUSIC_TRACKS.filter(t => t.free || adminOn);
+}
+
+function toggleAutoMusic() {
+  if (mPlaying) {
+    stopMusic();
+    mAutoOn = false;
+  } else {
+    mAutoOn = true;
+    const tracks = getAvailableTracks();
+    if (tracks.length > 0) startMusic(tracks[mAutoIdx % tracks.length].id);
+  }
+}
+
 function loadExercise() {
   if (timerExIdx >= timerExercises.length) { finishSession(); return; }
+  if (mAutoOn) {
+    const tracks = getAvailableTracks();
+    if (tracks.length > 0) {
+      startMusic(tracks[mAutoIdx % tracks.length].id);
+      mAutoIdx++;
+    }
+  }
   const ex = timerExercises[timerExIdx];
   timerTimeLeft = timerTotalTime = ex.dur;
 
@@ -1637,7 +1802,11 @@ function exitTimer() {
   stopTimer();
   stopMusic();
   if (currentDayNum !== 'CARE') {
-    S.set('resume', { dayNum: currentDayNum, exIdx: timerExIdx, date: TODAY_S });
+    if (timerPhase) {
+      S.set('resume', { dayNum: currentDayNum, phase: timerPhase, exIdx: timerExIdx, date: TODAY_S });
+    } else {
+      S.set('resume', { dayNum: currentDayNum, exIdx: timerExIdx, date: TODAY_S });
+    }
   }
   if (currentDayNum === 'CARE') { startCareSession(); }
   else { buildMissionList(); }
@@ -1959,6 +2128,7 @@ function mDistBass(freq, t, dur) {
 let mCtx = null, mGain = null, mPlaying = false;
 let mTrackId = null, mTimer = null, mNextBar = 0, mBar = 0;
 let mPreviewTimer = null, mPreviewing = false;
+let mAutoIdx = 0, mAutoOn = false;
 
 function semi(f, n) { return f * Math.pow(2, n / 12); }
 
@@ -2158,7 +2328,10 @@ function stopMusic(updateUI = true) {
 
 function updateMusicUI() {
   const btn = document.getElementById('music-toggle-btn');
-  if (btn) btn.classList.toggle('playing', mPlaying);
+  if (btn) {
+    btn.classList.toggle('playing', mPlaying);
+    btn.textContent = mPlaying ? '■' : '♫';
+  }
   document.querySelectorAll('.track-item').forEach(el => {
     el.classList.toggle('playing', el.dataset.id === mTrackId);
     el.querySelector('.track-item-play').textContent = el.dataset.id === mTrackId ? '■' : '▶';
