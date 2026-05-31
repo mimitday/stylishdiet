@@ -2299,6 +2299,7 @@ function startMusic(id) {
   mGain.gain.value = 0.72;
   mGain.connect(mCtx.destination);
 
+  mCtx.resume().catch(() => {});
   mTrackId = id; mPlaying = true; mBar = 0;
   const track = MUSIC_TRACKS.find(t => t.id === id);
   mNextBar = mCtx.currentTime + 0.05;
