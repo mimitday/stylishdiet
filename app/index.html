@@ -2208,13 +2208,14 @@ function scheduleBar(track, t0) {
 }
 
 function startMusic(id) {
-  // 完全に止めてからコンテキストを作り直す
-  stopMusic(false);
-  mCtx = new (window.AudioContext || window.webkitAudioContext)();
-  mGain = mCtx.createGain();
-  mGain.gain.value = 0.72;
-  mGain.connect(mCtx.destination);
-
+  clearTimeout(mTimer);
+  mPlaying = false;
+  if (!mCtx) {
+    mCtx = new (window.AudioContext || window.webkitAudioContext)();
+    mGain = mCtx.createGain();
+    mGain.gain.value = 0.72;
+    mGain.connect(mCtx.destination);
+  }
   mCtx.resume().catch(() => {});
   mTrackId = id; mPlaying = true; mBar = 0;
   const track = MUSIC_TRACKS.find(t => t.id === id);
