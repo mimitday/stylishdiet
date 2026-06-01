@@ -1,4 +1,4 @@
-const CACHE = 'body-edit-static-v6';
+const CACHE = 'body-edit-static-v7';
 const STATIC_ASSETS = [
   './icon.svg',
   './manifest.json',

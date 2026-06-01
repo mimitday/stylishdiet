@@ -412,84 +412,23 @@ body {
   flex-shrink:0; border-bottom:.5px solid var(--border); transition:border-color .3s;
 }
 .cam-title { font-family:'Cormorant',serif; font-size:20px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--text); transition:color .3s; }
-.cam-badge { font-size:var(--fs-xs); letter-spacing:.32em; color:var(--accent); text-transform:uppercase; border:.5px solid var(--border); padding:5px 10px; transition:all .3s; }
-.vf-wrap   {
-  margin:14px 24px; flex-shrink:0; border:.5px solid var(--border);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  position:relative; overflow:hidden; background:#050503; transition:border-color .3s;
-  height:260px;
-}
-.vf-c      { position:absolute; width:18px; height:18px; border-color:var(--accent); border-style:solid; transition:border-color .3s; }
-.vf-c.tl   { top:10px; left:10px; border-width:1px 0 0 1px; }
-.vf-c.tr   { top:10px; right:10px; border-width:1px 1px 0 0; }
-.vf-c.bl   { bottom:10px; left:10px; border-width:0 0 1px 1px; }
-.vf-c.br   { bottom:10px; right:10px; border-width:0 1px 1px 0; }
-.vf-icon   { width:32px; height:32px; border:.5px solid #3A3328; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-bottom:8px; }
-.vf-lbl    { font-size:var(--fs-sm); letter-spacing:.3em; color:#5A5248; text-transform:uppercase; }
-.ov-wrap   { padding:0 24px; margin-bottom:10px; flex-shrink:0; }
-.ov-lbl    { font-size:var(--fs-xs); letter-spacing:.38em; color:var(--muted); text-transform:uppercase; margin-bottom:7px; display:block; transition:color .3s; }
-.ov-tags   { display:flex; gap:5px; flex-wrap:wrap; }
-.ov-tag    {
-  border:.5px solid var(--border); padding:5px 11px; font-size:var(--fs-xs); letter-spacing:.22em;
-  color:var(--muted); text-transform:uppercase; cursor:pointer; transition:all .2s; font-family:'Cormorant Garamond',serif; user-select:none;
-}
-.ov-tag.on { border-color:var(--accent); color:var(--accent); }
-.cap-row   { display:flex; align-items:center; justify-content:space-between; padding:0 24px; flex-shrink:0; margin-bottom:12px; }
-.gal-strip { display:flex; gap:5px; }
-.gal-thumb { width:38px; height:38px; border:.5px solid var(--border); background:var(--surface); display:flex; align-items:center; justify-content:center; font-size:var(--fs-xs); color:var(--muted); transition:all .3s; }
-.cap-btn   {
-  width:52px; height:52px; border-radius:50%; border:1px solid var(--accent);
-  background:transparent; display:flex; align-items:center; justify-content:center;
-  cursor:pointer; position:relative;
-}
-.cap-btn::after { content:''; width:40px; height:40px; border-radius:50%; background:var(--btn-bg); position:absolute; transition:background .2s; }
-.cap-btn:hover::after { background:var(--accent); }
-.share-btn {
-  border:.5px solid var(--border); background:transparent; color:var(--muted);
-  font-size:var(--fs-xs); letter-spacing:.22em; text-transform:uppercase;
-  font-family:'Cormorant Garamond',serif; padding:8px 12px; cursor:pointer; transition:all .2s; text-align:center; line-height:1.4;
-}
-.share-btn:hover { border-color:var(--accent); color:var(--accent); }
-.share-hint { margin:0 24px; border:.5px dashed var(--border); padding:12px; display:flex; align-items:center; gap:12px; flex-shrink:0; transition:border-color .3s; }
-.s-thumb   { width:34px; height:52px; background:var(--surface); border:.5px solid var(--border); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:var(--fs-xs); color:var(--muted); transition:all .3s; }
-.s-info    { flex:1; }
-.s-ttl     { font-family:'Cormorant',serif; font-size:13px; font-weight:700; color:var(--text); letter-spacing:.06em; text-transform:uppercase; display:block; margin-bottom:2px; transition:color .3s; }
-.s-desc    { font-size:var(--fs-xs); letter-spacing:.16em; color:var(--muted); text-transform:uppercase; display:block; transition:color .3s; }
-.s-gen     { background:var(--btn-bg); color:var(--btn-txt); border:none; padding:8px 13px; font-size:var(--fs-xs); letter-spacing:.25em; text-transform:uppercase; font-family:'Cormorant Garamond',serif; font-weight:600; cursor:pointer; opacity:.3; transition:all .3s; }
-
-/* Premium placeholder section in camera */
-.premium-features {
-  margin: 16px 24px;
-  border: 0.5px solid var(--border);
-  padding: 16px;
-  flex-shrink: 0;
-}
-.premium-tag {
-  font-size:var(--fs-xs); letter-spacing: .38em; color: var(--accent);
-  text-transform: uppercase; display: block; margin-bottom: 12px;
-}
-.premium-items { list-style: none; }
-.premium-items li {
-  font-size:var(--fs-md); letter-spacing: .2em; color: var(--muted);
-  text-transform: uppercase; padding: 6px 0;
-  border-bottom: .5px solid var(--border);
-  display: flex; gap: 10px; align-items: center;
-  transition: color .3s;
-}
-.premium-items li:last-child { border-bottom: none; }
-.premium-items li::before { content: '—'; color: var(--accent); flex-shrink: 0; }
-.fitbit-row {
-  margin: 8px 24px 0;
-  border: .5px dashed var(--border);
-  padding: 12px;
-  display: flex; align-items: center; gap: 12px;
-  flex-shrink: 0;
-}
-.fitbit-icon { font-size: 20px; }
-.fitbit-info { flex: 1; }
-.fitbit-title { font-family:'Cormorant',serif; font-size:14px; font-weight:700; color:var(--text); letter-spacing:.06em; text-transform:uppercase; display:block; margin-bottom:2px; transition:color .3s; }
-.fitbit-desc  { font-size:var(--fs-xs); letter-spacing:.16em; color:var(--muted); text-transform:uppercase; display:block; transition:color .3s; }
-.fitbit-lock { border:.5px solid var(--border); background:transparent; color:var(--muted); font-size:7px; letter-spacing:.25em; text-transform:uppercase; font-family:'Cormorant Garamond',serif; padding:6px 10px; cursor:not-allowed; opacity:.4; }
+.cam-frame-tabs { display:flex; flex-shrink:0; border-bottom:.5px solid var(--border); }
+.cam-ftab { flex:1; background:transparent; border:none; border-right:.5px solid var(--border); color:var(--muted); font-size:8px; letter-spacing:.26em; text-transform:uppercase; font-family:'Cormorant Garamond',serif; padding:10px 4px; cursor:pointer; transition:all .2s; }
+.cam-ftab:last-child { border-right:none; }
+.cam-ftab.active { color:var(--accent); background:var(--dim); }
+.cam-filter-tabs { display:flex; flex-shrink:0; border-bottom:.5px solid var(--border); }
+.cam-filter-tab { flex:1; background:transparent; border:none; border-right:.5px solid var(--border); color:var(--muted); font-size:7px; letter-spacing:.2em; text-transform:uppercase; font-family:'Cormorant Garamond',serif; padding:9px 2px; cursor:pointer; transition:all .2s; }
+.cam-filter-tab:last-child { border-right:none; }
+.cam-filter-tab.active { color:var(--text); background:var(--dim); }
+.cam-preview-area { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px 24px 8px; gap:10px; overflow:hidden; min-height:0; }
+.cam-placeholder { display:flex; flex-direction:column; align-items:center; gap:10px; }
+.cam-placeholder-icon { width:48px; height:48px; border:.5px solid var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--muted); }
+.cam-placeholder-txt { font-size:var(--fs-xs); letter-spacing:.26em; color:var(--muted); text-transform:uppercase; text-align:center; }
+.cam-result-img { max-width:100%; max-height:100%; display:block; object-fit:contain; border:.5px solid var(--border); }
+.cam-save-hint { font-size:8px; letter-spacing:.28em; color:var(--muted); text-transform:uppercase; text-align:center; flex-shrink:0; }
+.cam-pick-row { display:flex; padding:10px 24px 16px; flex-shrink:0; }
+.cam-pick-btn { flex:1; border:.5px solid var(--border); background:transparent; color:var(--text); font-size:var(--fs-xs); letter-spacing:.32em; text-transform:uppercase; font-family:'Cormorant Garamond',serif; padding:13px; cursor:pointer; transition:all .2s; }
+.cam-pick-btn:hover { border-color:var(--accent); color:var(--accent); }
 
 /* ════ SETUP ════ */
 #s-setup {
@@ -898,68 +837,41 @@ body {
 <div class="screen flex-screen" id="s-camera">
 
   <div class="cam-header">
-    <div class="cam-title">THE EDIT Camera</div>
-    <div class="cam-badge">Premium</div>
+    <div class="cam-title">Body Edit Camera</div>
   </div>
 
-  <div class="vf-wrap">
-    <div class="vf-c tl"></div><div class="vf-c tr"></div>
-    <div class="vf-c bl"></div><div class="vf-c br"></div>
-    <div class="vf-icon">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5A5248" stroke-width="1.5">
-        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-        <circle cx="12" cy="13" r="4"/>
-      </svg>
+  <div class="cam-frame-tabs">
+    <button class="cam-ftab active" onclick="setCamFrame('cover',this)">The Cover</button>
+    <button class="cam-ftab" onclick="setCamFrame('noir',this)">Noir Edition</button>
+    <button class="cam-ftab" onclick="setCamFrame('ivory',this)">Ivory</button>
+  </div>
+
+  <div class="cam-filter-tabs">
+    <button class="cam-filter-tab active" onclick="setCamFilter('original',this)">Original</button>
+    <button class="cam-filter-tab" onclick="setCamFilter('bw',this)">B&amp;W</button>
+    <button class="cam-filter-tab" onclick="setCamFilter('sepia',this)">Sepia</button>
+    <button class="cam-filter-tab" onclick="setCamFilter('fade',this)">Fade</button>
+    <button class="cam-filter-tab" onclick="setCamFilter('highcon',this)">Hi-Con</button>
+  </div>
+
+  <div class="cam-preview-area" id="cam-preview-area">
+    <div class="cam-placeholder" id="cam-placeholder">
+      <div class="cam-placeholder-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+          <circle cx="12" cy="13" r="4"/>
+        </svg>
+      </div>
+      <div class="cam-placeholder-txt">写真を選んでフレームを適用</div>
     </div>
-    <div class="vf-lbl">Coming Soon</div>
+    <canvas id="cam-canvas" style="display:none"></canvas>
+    <img id="cam-result" class="cam-result-img" style="display:none" alt="">
+    <div class="cam-save-hint" id="cam-save-hint" style="display:none">長押しで写真に保存できます</div>
   </div>
 
-  <div class="ov-wrap">
-    <span class="ov-lbl">Overlay Options</span>
-    <div class="ov-tags">
-      <div class="ov-tag on" onclick="this.classList.toggle('on')">Date</div>
-      <div class="ov-tag on" onclick="this.classList.toggle('on')">Weight</div>
-      <div class="ov-tag"    onclick="this.classList.toggle('on')">Day Name</div>
-      <div class="ov-tag"    onclick="this.classList.toggle('on')">Progress</div>
-    </div>
-  </div>
-
-  <div class="cap-row">
-    <div class="gal-strip">
-      <div class="gal-thumb">—</div>
-      <div class="gal-thumb">—</div>
-    </div>
-    <button class="cap-btn" style="opacity:.3;cursor:not-allowed"></button>
-    <button class="share-btn" style="opacity:.3;cursor:not-allowed">Share<br>Card</button>
-  </div>
-
-  <div class="share-hint">
-    <div class="s-thumb">9:16</div>
-    <div class="s-info">
-      <span class="s-ttl">Challenge Card</span>
-      <span class="s-desc">07.05 · Editorial · IG Ready</span>
-    </div>
-    <button class="s-gen">Gen →</button>
-  </div>
-
-  <div class="premium-features">
-    <span class="premium-tag">Premium — THE EDIT Camera</span>
-    <ul class="premium-items">
-      <li>Progress Photo (端末内保存)</li>
-      <li>Before / After Comparison</li>
-      <li>Share Card Generator</li>
-      <li>07.05 Challenge Card</li>
-      <li>Editorial Templates</li>
-    </ul>
-  </div>
-
-  <div class="fitbit-row">
-    <div class="fitbit-icon">⌚</div>
-    <div class="fitbit-info">
-      <span class="fitbit-title">Device Sync</span>
-      <span class="fitbit-desc">Fitbit / Apple Health · Steps, HR, Calories</span>
-    </div>
-    <button class="fitbit-lock">Unlock →</button>
+  <div class="cam-pick-row">
+    <input type="file" id="cam-file-input" accept="image/*" style="display:none" onchange="onCamFileSelect(event)">
+    <button class="cam-pick-btn" onclick="document.getElementById('cam-file-input').click()">写真を選ぶ</button>
   </div>
 
 </div><!-- /camera -->
@@ -2430,6 +2342,385 @@ function closeMusicOverlay() {
   document.getElementById('track-overlay').classList.remove('show');
 }
 
+
+/* ════════════════════════════════════
+   CAMERA
+════════════════════════════════════ */
+let camFrame  = 'cover';
+let camFilter = 'original';
+let camImg    = null;
+const CAM_W   = 360;
+const CAM_H   = 640;
+
+function setCamFrame(id, btn) {
+  camFrame = id;
+  document.querySelectorAll('.cam-ftab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCamFrame();
+}
+
+function setCamFilter(id, btn) {
+  camFilter = id;
+  document.querySelectorAll('.cam-filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCamFrame();
+}
+
+function onCamFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => { camImg = img; renderCamFrame(); };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderCamFrame() {
+  if (!camImg) return;
+  const canvas = document.getElementById('cam-canvas');
+  canvas.width  = CAM_W;
+  canvas.height = CAM_H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, CAM_W, CAM_H);
+
+  const filterMap = {
+    original: 'none',
+    bw:       'grayscale(100%) contrast(1.15)',
+    sepia:    'sepia(85%) contrast(1.05) brightness(0.95)',
+    fade:     'saturate(0.5) brightness(1.15) contrast(0.9)',
+    highcon:  'contrast(1.4) brightness(0.88) saturate(0.8)'
+  };
+  ctx.filter = filterMap[camFilter] || 'none';
+
+  const ir = camImg.width / camImg.height;
+  const cr = CAM_W / CAM_H;
+  let sx, sy, sw, sh;
+  if (ir > cr) { sh = camImg.height; sw = sh * cr; sx = (camImg.width - sw) / 2; sy = 0; }
+  else         { sw = camImg.width;  sh = sw / cr; sx = 0; sy = (camImg.height - sh) / 2; }
+  ctx.drawImage(camImg, sx, sy, sw, sh, 0, 0, CAM_W, CAM_H);
+  ctx.filter = 'none';
+
+  const data = getCamData();
+  if      (camFrame === 'cover') drawCamCover(ctx, data);
+  else if (camFrame === 'noir')  drawCamNoir(ctx, data);
+  else                           drawCamIvory(ctx, data);
+
+  const result = document.getElementById('cam-result');
+  result.src = canvas.toDataURL('image/jpeg', 0.92);
+  result.style.display = 'block';
+  document.getElementById('cam-placeholder').style.display = 'none';
+  document.getElementById('cam-save-hint').style.display   = 'block';
+}
+
+function getCamData() {
+  const curW   = S.get('weight', W_START);
+  const lost   = W_START - curW;
+  const dayIdx = ((programDay - 1) % 5) + 1;
+  const day    = PROGRAM[dayIdx] || PROGRAM[1];
+  const dd = String(TODAY.getDate()).padStart(2,'0');
+  const mm = String(TODAY.getMonth()+1).padStart(2,'0');
+  const yy = TODAY.getFullYear();
+  const gd = String(GOAL_DATE.getDate()).padStart(2,'0');
+  const gm = String(GOAL_DATE.getMonth()+1).padStart(2,'0');
+  return {
+    dayNum:   programDay,
+    weekNum:  weekNum,
+    dayName:  day.name,
+    dayGoal:  day.goal,
+    curW,
+    lostKg:   lost > 0 ? lost.toFixed(1) : null,
+    daysLeft: DAYS_LEFT,
+    dateStr:  `${dd}.${mm}.${yy}`,
+    goalStr:  `${gd}.${gm}`
+  };
+}
+
+function camGrad(ctx, x, y, w, h, a0, a1) {
+  const g = ctx.createLinearGradient(x, y, x, y + h);
+  g.addColorStop(0, `rgba(8,6,4,${a0})`);
+  g.addColorStop(1, `rgba(8,6,4,${a1})`);
+  ctx.fillStyle = g; ctx.fillRect(x, y, w, h);
+}
+
+function camSplitName(name) {
+  const parts = name.split(' ');
+  const mid = Math.ceil(parts.length / 2);
+  return [parts.slice(0, mid).join(' '), parts.slice(mid).join(' ')].filter(Boolean);
+}
+
+function drawCamCover(ctx, d) {
+  const W = CAM_W, H = CAM_H;
+  ctx.save();
+  camGrad(ctx, 0, 0, W, 200, 0.88, 0);
+  camGrad(ctx, 0, H - 290, W, 290, 0, 0.97);
+
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = '#F5F1E8';
+  ctx.font = '700 56px Cormorant, serif';
+  ctx.fillText('BODY', 22, 24);
+  ctx.fillText('EDIT', 22, 76);
+
+  ctx.fillStyle = '#C9A46A';
+  ctx.font = '300 8px Cormorant Garamond, serif';
+  ctx.letterSpacing = '3.5px';
+  ctx.fillText('PERSONAL EDITION', 22, 134);
+  ctx.letterSpacing = '0px';
+
+  ctx.strokeStyle = 'rgba(201,164,106,0.4)';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(22, 150); ctx.lineTo(W - 22, 150); ctx.stroke();
+
+  ctx.fillStyle = 'rgba(245,241,232,0.5)';
+  ctx.font = '300 8px Cormorant Garamond, serif';
+  ctx.letterSpacing = '3px';
+  ctx.fillText(`DAY ${String(d.dayNum).padStart(2,'0')} · WEEK ${String(d.weekNum).padStart(2,'0')}`, 22, 158);
+  ctx.letterSpacing = '0px';
+
+  const bY = H - 224;
+  ctx.fillStyle = '#F5F1E8';
+  ctx.font = '700 28px Cormorant, serif';
+  const lines = camSplitName(d.dayName);
+  lines.forEach((l, i) => ctx.fillText(l, 22, bY + i * 32));
+
+  ctx.fillStyle = '#C9A46A';
+  ctx.font = '300 8px Cormorant Garamond, serif';
+  ctx.letterSpacing = '2.5px';
+  ctx.fillText(d.dayGoal, 22, bY + lines.length * 32 + 8);
+  ctx.letterSpacing = '0px';
+
+  const sY = H - 72;
+  ctx.strokeStyle = 'rgba(201,164,106,0.3)';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(22, sY - 14); ctx.lineTo(W - 22, sY - 14); ctx.stroke();
+
+  ctx.fillStyle = 'rgba(245,241,232,0.45)';
+  ctx.font = '300 7px Cormorant Garamond, serif';
+  ctx.letterSpacing = '2px';
+  ctx.fillText('DAYS LEFT', 22, sY);
+  ctx.letterSpacing = '0px';
+  ctx.fillStyle = '#C9A46A';
+  ctx.font = '700 32px Cormorant, serif';
+  ctx.fillText(String(d.daysLeft), 22, sY + 10);
+
+  ctx.textAlign = 'right';
+  ctx.fillStyle = 'rgba(245,241,232,0.45)';
+  ctx.font = '300 7px Cormorant Garamond, serif';
+  ctx.letterSpacing = '2px';
+  ctx.fillText('TODAY', W - 22, sY);
+  ctx.letterSpacing = '0px';
+  ctx.fillStyle = '#F5F1E8';
+  ctx.font = '700 20px Cormorant, serif';
+  ctx.fillText(`${d.curW.toFixed(1)} KG`, W - 22, sY + 12);
+  if (d.lostKg !== null) {
+    ctx.fillStyle = 'rgba(201,164,106,0.7)';
+    ctx.font = '300 9px Cormorant Garamond, serif';
+    ctx.letterSpacing = '2px';
+    ctx.fillText(`−${d.lostKg} KG`, W - 22, sY + 36);
+    ctx.letterSpacing = '0px';
+  }
+  ctx.restore();
+}
+
+function drawCamNoir(ctx, d) {
+  const W = CAM_W, H = CAM_H;
+  ctx.save();
+
+  ctx.fillStyle = 'rgba(10,14,22,0.3)';
+  ctx.fillRect(0, 0, W, H);
+  camGrad(ctx, 0, 0, W, 130, 0.55, 0);
+  camGrad(ctx, 0, H - 260, W, 260, 0, 0.98);
+
+  for (let i = 0; i < 5; i++) {
+    ctx.beginPath();
+    ctx.arc(24 + i * 14, 48, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = i < d.dayNum ? '#C9A46A' : 'rgba(201,164,106,0.22)';
+    ctx.fill();
+  }
+
+  ctx.textBaseline = 'top';
+  ctx.textAlign = 'right';
+  ctx.fillStyle = 'rgba(245,241,232,0.75)';
+  ctx.font = '700 11px Cormorant, serif';
+  ctx.letterSpacing = '3px';
+  ctx.fillText('BODY EDIT', W - 22, 36);
+  ctx.letterSpacing = '0px';
+  ctx.fillStyle = 'rgba(201,164,106,0.55)';
+  ctx.font = '300 8px Cormorant Garamond, serif';
+  ctx.letterSpacing = '2px';
+  ctx.fillText(d.dateStr, W - 22, 52);
+  ctx.letterSpacing = '0px';
+  ctx.textAlign = 'left';
+
+  const cY = H * 0.36;
+  ctx.save();
+  ctx.strokeStyle = 'rgba(245,241,232,0.2)';
+  ctx.lineWidth = 0.7;
+  ctx.font = '700 80px Cormorant, serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.strokeText('BODY', W / 2, cY - 44);
+  ctx.strokeText('EDIT', W / 2, cY + 38);
+  ctx.strokeStyle = '#C9A46A';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(W / 2 - 22, cY + 70); ctx.lineTo(W / 2 + 22, cY + 70); ctx.stroke();
+  ctx.fillStyle = 'rgba(201,164,106,0.65)';
+  ctx.font = '300 8px Cormorant Garamond, serif';
+  ctx.letterSpacing = '5px';
+  ctx.fillText(`DAY ${String(d.dayNum).padStart(2,'0')}`, W / 2, cY + 86);
+  ctx.letterSpacing = '0px';
+  ctx.restore();
+
+  const bY = H - 192;
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = '#F5F1E8';
+  ctx.font = '700 26px Cormorant, serif';
+  const lines = camSplitName(d.dayName);
+  lines.forEach((l, i) => ctx.fillText(l, 22, bY + i * 30));
+
+  ctx.strokeStyle = '#C9A46A';
+  ctx.lineWidth = 0.5;
+  const rY = bY + lines.length * 30 + 8;
+  ctx.beginPath(); ctx.moveTo(22, rY); ctx.lineTo(W - 22, rY); ctx.stroke();
+
+  const mY = rY + 14;
+  ctx.fillStyle = 'rgba(245,241,232,0.38)';
+  ctx.font = '300 7px Cormorant Garamond, serif';
+  ctx.letterSpacing = '2px';
+  ctx.fillText('WEIGHT', 22, mY);
+  ctx.letterSpacing = '0px';
+  ctx.fillStyle = '#F5F1E8';
+  ctx.font = '700 18px Cormorant, serif';
+  ctx.fillText(d.curW.toFixed(1), 22, mY + 10);
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(245,241,232,0.38)';
+  ctx.font = '300 7px Cormorant Garamond, serif';
+  ctx.letterSpacing = '2px';
+  ctx.fillText(`UNTIL ${d.goalStr}`, W / 2, mY);
+  ctx.letterSpacing = '0px';
+  ctx.fillStyle = '#F5F1E8';
+  ctx.font = '700 18px Cormorant, serif';
+  ctx.fillText(String(d.daysLeft), W / 2, mY + 10);
+
+  ctx.textAlign = 'right';
+  if (d.lostKg !== null) {
+    ctx.fillStyle = 'rgba(201,164,106,0.5)';
+    ctx.font = '300 7px Cormorant Garamond, serif';
+    ctx.letterSpacing = '2px';
+    ctx.fillText('LOST', W - 22, mY);
+    ctx.letterSpacing = '0px';
+    ctx.fillStyle = '#C9A46A';
+    ctx.font = '700 18px Cormorant, serif';
+    ctx.fillText(`−${d.lostKg}`, W - 22, mY + 10);
+  } else {
+    ctx.fillStyle = 'rgba(245,241,232,0.38)';
+    ctx.font = '300 7px Cormorant Garamond, serif';
+    ctx.letterSpacing = '2px';
+    ctx.fillText('WEEK', W - 22, mY);
+    ctx.letterSpacing = '0px';
+    ctx.fillStyle = '#F5F1E8';
+    ctx.font = '700 18px Cormorant, serif';
+    ctx.fillText(String(d.weekNum).padStart(2,'0'), W - 22, mY + 10);
+  }
+  ctx.restore();
+}
+
+function drawCamIvory(ctx, d) {
+  const W = CAM_W, H = CAM_H;
+  ctx.save();
+
+  ctx.fillStyle = 'rgba(238,232,220,0.16)';
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.strokeStyle = 'rgba(201,164,106,0.26)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(14, 14, W - 28, H - 28);
+
+  const cs = 16;
+  ctx.strokeStyle = '#C9A46A';
+  ctx.lineWidth = 1.5;
+  [[14,14,1,1],[W-14,14,-1,1],[14,H-14,1,-1],[W-14,H-14,-1,-1]].forEach(([x,y,dx,dy]) => {
+    ctx.beginPath(); ctx.moveTo(x, y + dy * cs); ctx.lineTo(x, y); ctx.lineTo(x + dx * cs, y); ctx.stroke();
+  });
+
+  ctx.textBaseline = 'top';
+  ctx.fillStyle = 'rgba(245,241,232,0.92)';
+  ctx.font = '700 13px Cormorant, serif';
+  ctx.letterSpacing = '4px';
+  ctx.fillText('BODY EDIT', 26, 26);
+  ctx.letterSpacing = '0px';
+  ctx.textAlign = 'right';
+  ctx.fillStyle = 'rgba(245,241,232,0.48)';
+  ctx.font = '300 8px Cormorant Garamond, serif';
+  ctx.letterSpacing = '2px';
+  ctx.fillText(d.dateStr, W - 26, 28);
+  ctx.letterSpacing = '0px';
+  ctx.textAlign = 'left';
+
+  const pH = 148;
+  const pY = H - pH;
+  ctx.fillStyle = 'rgba(245,240,232,0.97)';
+  ctx.fillRect(0, pY, W, pH);
+
+  ctx.strokeStyle = '#C9A46A';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(22, pY + 13); ctx.lineTo(W - 22, pY + 13); ctx.stroke();
+
+  ctx.fillStyle = '#9A8A70';
+  ctx.font = '300 7.5px Cormorant Garamond, serif';
+  ctx.letterSpacing = '3.5px';
+  ctx.fillText(`DAY ${String(d.dayNum).padStart(2,'0')} · WEEK ${String(d.weekNum).padStart(2,'0')}`, 22, pY + 20);
+  ctx.letterSpacing = '0px';
+
+  ctx.fillStyle = '#111111';
+  ctx.font = '700 22px Cormorant, serif';
+  const ivName = d.dayName.split(' ').slice(0, 2).join(' ');
+  ctx.fillText(ivName, 22, pY + 32);
+
+  ctx.fillStyle = '#9A8A70';
+  ctx.font = '300 8px Cormorant Garamond, serif';
+  ctx.letterSpacing = '2px';
+  ctx.fillText(d.dayGoal, 22, pY + 62);
+  ctx.letterSpacing = '0px';
+
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#111111';
+  ctx.font = '700 30px Cormorant, serif';
+  ctx.fillText(d.curW.toFixed(1), W - 22, pY + 32);
+  ctx.fillStyle = '#9A8A70';
+  ctx.font = '300 8px Cormorant Garamond, serif';
+  ctx.letterSpacing = '2px';
+  ctx.fillText('KG', W - 22, pY + 68);
+  ctx.letterSpacing = '0px';
+  if (d.lostKg !== null) {
+    ctx.fillStyle = '#9A6A24';
+    ctx.font = '700 13px Cormorant, serif';
+    ctx.fillText(`−${d.lostKg} KG`, W - 22, pY + 82);
+  }
+  ctx.textAlign = 'left';
+
+  ctx.strokeStyle = 'rgba(154,122,74,0.28)';
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(22, pY + 100); ctx.lineTo(W - 22, pY + 100); ctx.stroke();
+
+  ctx.fillStyle = '#9A8A70';
+  ctx.font = '300 7.5px Cormorant Garamond, serif';
+  ctx.letterSpacing = '2.5px';
+  ctx.fillText(`${d.daysLeft} DAYS UNTIL ${d.goalStr}`, 22, pY + 112);
+  ctx.letterSpacing = '0px';
+
+  for (let i = 0; i < 5; i++) {
+    ctx.beginPath();
+    ctx.arc(W - 22 - (4 - i) * 9, pY + 115, 3, 0, Math.PI * 2);
+    ctx.fillStyle = i < d.dayNum ? '#9A7A4A' : '#D4C4A0';
+    ctx.fill();
+  }
+
+  ctx.restore();
+}
 
 /* ════════════════════════════════════
    SERVICE WORKER
