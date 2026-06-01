@@ -1233,7 +1233,9 @@ let GOAL_DATE = new Date('2026-12-31');
 let DAYS_LEFT = 0;
 
 function loadSetup() {
-  const isDemo = new URLSearchParams(location.search).has('demo');
+  const params = new URLSearchParams(location.search);
+  if (params.get('admin') === 'light') { S.set('admin', true); history.replaceState(null, '', location.pathname); }
+  const isDemo = params.has('demo');
   const setup  = isDemo ? { startW: 58, goalW: 51, goalDate: '2026-12-31' } : S.get('setup', null);
   if (!setup) {
     document.getElementById('s-setup').classList.add('active');
