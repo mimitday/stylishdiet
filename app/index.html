@@ -2430,32 +2430,6 @@ function closeMusicOverlay() {
   document.getElementById('track-overlay').classList.remove('show');
 }
 
-/* ════════════════════════════════════
-   ADMIN MODE
-════════════════════════════════════ */
-(function() {
-  let adminTimer = null;
-  const brand = document.querySelector('#s-main .brand');
-  if (!brand) return;
-  brand.style.userSelect = 'none';
-  brand.style.webkitUserSelect = 'none';
-  brand.addEventListener('contextmenu', e => e.preventDefault());
-
-  const activate = e => {
-    e.preventDefault();
-    clearTimeout(adminTimer);
-    adminTimer = setTimeout(() => {
-      const next = !S.get('admin', false);
-      S.set('admin', next);
-      buildTrackList();
-      brand.style.transition = 'color .3s';
-      brand.style.color = next ? 'var(--accent)' : '';
-      setTimeout(() => brand.style.color = '', 1500);
-    }, 7000);
-  };
-  brand.addEventListener('pointerdown', activate);
-  ['pointerup','pointerleave','pointercancel','touchend'].forEach(e => brand.addEventListener(e, () => clearTimeout(adminTimer)));
-})();
 
 /* ════════════════════════════════════
    SERVICE WORKER
