@@ -771,6 +771,11 @@ body {
     <div id="weight-chart"></div>
   </div>
 
+  <div class="w-row" style="margin-bottom:16px">
+    <input class="w-in" type="number" inputmode="decimal" placeholder="74.6" id="s-w-input" step="0.1">
+    <button class="log-btn" onclick="logWeight('s-w-input')">LOG</button>
+  </div>
+
   <span class="micro-lbl" style="margin-bottom:8px;display:block">Weight Log</span>
   <div id="weight-log-list"></div>
 
@@ -1303,15 +1308,16 @@ function updateProgress(w) {
 const savedW = S.get('weight', W_START);
 updateProgress(savedW);
 
-function logWeight() {
-  const val = parseFloat(document.getElementById('w-input').value);
+function logWeight(inputId = 'w-input') {
+  const val = parseFloat(document.getElementById(inputId).value);
   if (isNaN(val) || val < 30 || val > 200) return;
   S.set('weight', val);
   const hist = S.get('weight-hist', []);
   hist.push({ date: TODAY_S, w: val });
   S.set('weight-hist', hist);
   updateProgress(val);
-  document.getElementById('w-input').value = '';
+  document.getElementById(inputId).value = '';
+  if (inputId === 's-w-input') buildStatsScreen();
 }
 
 /* ════════════════════════════════════
