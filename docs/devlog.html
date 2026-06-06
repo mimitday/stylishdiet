@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>stylishdiet devlog</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Courier New', monospace; background: #0c0b09; color: #c8bfb0; padding: 32px 24px; max-width: 720px; margin: 0 auto; line-height: 1.7; }
+  h1 { font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #6b5f52; margin-bottom: 40px; }
+  .entry { border-top: .5px solid #2a2420; padding: 28px 0; }
+  .entry-date { font-size: 10px; letter-spacing: .25em; color: #6b5f52; margin-bottom: 6px; }
+  .entry-title { font-size: 15px; color: #e8ddd0; margin-bottom: 20px; }
+  .section { margin-bottom: 16px; }
+  .section-label { font-size: 9px; letter-spacing: .3em; text-transform: uppercase; color: #6b5f52; margin-bottom: 8px; }
+  .item { font-size: 12px; padding: 5px 0 5px 14px; border-left: 1px solid #2a2420; margin-bottom: 4px; }
+  .item.ok::before { content: '✓ '; color: #7a9e7e; }
+  .item.warn::before { content: '✗ '; color: #9e7a5a; }
+  .item.todo::before { content: '· '; color: #6b5f52; }
+  code { font-size: 11px; background: #1a1714; padding: 1px 5px; border-radius: 2px; color: #a89880; }
+</style>
+</head>
+<body>
+
+<h1>stylishdiet / devlog</h1>
+
+<!-- ══════════ 2026-06-07 ══════════ -->
+<div class="entry">
+  <div class="entry-date">2026-06-07</div>
+  <div class="entry-title">カメラフィルター修正 + 中央タップUX</div>
+
+  <div class="section">
+    <div class="section-label">実装</div>
+    <div class="item ok">
+      フィルター (<code>B&amp;W</code> / <code>Sepia</code> / <code>Fade</code> / <code>Hi-Con</code>) が iOS Safari で一切効かなかった問題を修正。
+      <code>ctx.filter</code>（Safari 16以下で未サポート）を廃止し、<code>getImageData</code> → <code>camFilterPixels()</code> → <code>putImageData</code> に置き換え。
+      全フィルターをピクセル操作で実装（grayscale / sepia matrix / saturate / contrast / brightness を手書き計算）。
+    </div>
+    <div class="item ok">
+      中央プレビューエリア (<code>cam-preview-area</code>) をタップで写真選択できるように変更。
+      プレースホルダー・写真表示中どちらをタップしても <code>input[type=file]</code> が開く。
+      <code>cursor: pointer</code> を追加。
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">却下・断念</div>
+    <div class="item warn">
+      <code>ctx.filter</code> の CSS フィルター文字列方式はそのまま残す案 → iOS 対応が保証できないため廃止。
+      PixiJS 等の外部ライブラリ導入案 → 最小構成ルールにより却下。
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">残タスク</div>
+    <div class="item todo">セットアップ画面の二重active問題（未確認）</div>
+    <div class="item todo">Stats・ライトモード・セットアップのlive動作確認</div>
+    <div class="item todo">運動説明が分かりにくい問題（次に対応）</div>
+    <div class="item todo">公開準備が整ったらメンテページ → LPに戻す</div>
+  </div>
+</div>
+
+</body>
+</html>
