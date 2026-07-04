@@ -328,6 +328,8 @@ body {
 
 /* Beat grid */
 .t-picto-zone { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px 24px 0; gap:14px; min-height:0; }
+.t-picto-svg   { width:64px; height:64px; color:var(--accent); flex-shrink:0; transition:color .3s; }
+.t-picto-svg svg { width:100%; height:100%; }
 .t-picto-arrow { font-size:52px; color:var(--accent); line-height:1; }
 .t-picto-desc  { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:300; color:var(--text); letter-spacing:.12em; text-align:center; width:100%; line-height:1.3; transition:color .3s; }
 .t-beat-dots   { display:flex; gap:8px; }
@@ -409,7 +411,7 @@ body {
 .cam-filter-tab { flex:1; background:transparent; border:none; border-right:.5px solid var(--border); color:var(--muted); font-size:7px; letter-spacing:.2em; text-transform:uppercase; font-family:'Cormorant Garamond',serif; padding:9px 2px; cursor:pointer; transition:all .2s; }
 .cam-filter-tab:last-child { border-right:none; }
 .cam-filter-tab.active { color:var(--text); background:var(--dim); }
-.cam-preview-area { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px 24px 8px; gap:10px; overflow:hidden; min-height:0; }
+.cam-preview-area { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px 24px 8px; gap:10px; overflow:hidden; min-height:0; cursor:pointer; }
 .cam-placeholder { display:flex; flex-direction:column; align-items:center; gap:10px; }
 .cam-placeholder-icon { width:48px; height:48px; border:.5px solid var(--border); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--muted); }
 .cam-placeholder-txt { font-size:var(--fs-xs); letter-spacing:.26em; color:var(--muted); text-transform:uppercase; text-align:center; }
@@ -792,6 +794,7 @@ body {
 
   <!-- Picto zone -->
   <div class="t-picto-zone">
+    <div class="t-picto-svg" id="t-picto-svg"></div>
     <div class="t-picto-arrow" id="t-picto-arrow">—</div>
     <div class="t-picto-desc"  id="t-picto-desc">—</div>
     <div class="t-beat-dots">
@@ -856,7 +859,7 @@ body {
     <button class="cam-filter-tab" onclick="setCamFilter('highcon',this)">Hi-Con</button>
   </div>
 
-  <div class="cam-preview-area" id="cam-preview-area">
+  <div class="cam-preview-area" id="cam-preview-area" onclick="document.getElementById('cam-file-input').click()">
     <div class="cam-placeholder" id="cam-placeholder">
       <div class="cam-placeholder-icon">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1611,6 +1614,67 @@ function toggleAutoMusic() {
   }
 }
 
+/* ════════════════════════════════════
+   PICTOGRAM（部位ラインアート）
+   PICTO_OVERRIDES: ユーザーが手描きしたイラストを ex.id をキーに登録すると
+   PICTO_SVG（AI生成の部位アート）より優先して表示される。
+   例: PICTO_OVERRIDES['d1e6'] = `<svg ...>...</svg>`;
+════════════════════════════════════ */
+const PICTO_OVERRIDES = {
+  // 'd1e6': `<svg viewBox="0 0 56 56" ...>...</svg>`,
+};
+
+const PICTO_SVG = {
+  neck: `<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+    <circle cx="28" cy="14" r="9"/><line x1="28" y1="23" x2="28" y2="36"/><line x1="20" y1="28" x2="36" y2="28"/>
+  </svg>`,
+  shoulder: `<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+    <circle cx="28" cy="12" r="7"/><line x1="28" y1="19" x2="28" y2="32"/><line x1="10" y1="24" x2="46" y2="24"/><circle cx="10" cy="24" r="3"/><circle cx="46" cy="24" r="3"/>
+  </svg>`,
+  chest: `<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+    <circle cx="28" cy="10" r="6"/><line x1="28" y1="16" x2="28" y2="46"/><path d="M14 22 Q28 28 42 22"/><path d="M14 30 Q28 36 42 30"/><line x1="14" y1="22" x2="14" y2="30"/><line x1="42" y1="22" x2="42" y2="30"/>
+  </svg>`,
+  waist: `<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+    <circle cx="28" cy="10" r="6"/><line x1="28" y1="16" x2="28" y2="28"/><ellipse cx="28" cy="32" rx="14" ry="5"/><line x1="18" y1="35" x2="14" y2="48"/><line x1="38" y1="35" x2="42" y2="48"/>
+  </svg>`,
+  glute: `<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+    <circle cx="28" cy="10" r="6"/><line x1="28" y1="16" x2="28" y2="26"/><path d="M14 26 Q14 40 21 42 Q28 44 35 42 Q42 40 42 26"/><line x1="14" y1="26" x2="42" y2="26"/>
+  </svg>`,
+  leg: `<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+    <line x1="22" y1="4" x2="22" y2="32"/><line x1="34" y1="4" x2="34" y2="32"/><path d="M22 32 Q22 42 16 46 L32 46"/><path d="M34 32 Q34 42 28 46 L44 46"/>
+  </svg>`,
+  arm: `<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+    <circle cx="28" cy="10" r="6"/><line x1="28" y1="16" x2="28" y2="26"/><line x1="8" y1="26" x2="48" y2="26"/><path d="M8 26 Q6 34 10 40"/><path d="M48 26 Q50 34 46 40"/><line x1="10" y1="40" x2="14" y2="48"/><line x1="46" y1="40" x2="42" y2="48"/>
+  </svg>`,
+  back: `<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+    <circle cx="28" cy="10" r="6"/><path d="M28 16 Q24 24 28 32 Q32 40 28 48"/><line x1="22" y1="20" x2="34" y2="20"/><line x1="20" y1="28" x2="36" y2="28"/><line x1="22" y1="36" x2="34" y2="36"/>
+  </svg>`,
+  core: `<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+    <circle cx="28" cy="10" r="6"/><line x1="28" y1="16" x2="28" y2="44"/><rect x="16" y="22" width="24" height="16" rx="2"/><line x1="28" y1="22" x2="28" y2="38"/>
+  </svg>`,
+  full: `<svg viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+    <circle cx="28" cy="8" r="6"/><line x1="28" y1="14" x2="28" y2="34"/><line x1="12" y1="20" x2="44" y2="20"/><line x1="28" y1="34" x2="18" y2="50"/><line x1="28" y1="34" x2="38" y2="50"/>
+  </svg>`,
+};
+
+function getExPictoKey(ex) {
+  const t = ex.name + ' ' + ex.desc;
+  if (/NECK|首|顔/.test(t))                                          return 'neck';
+  if (/GLUTE|BOOTY|お尻/.test(t))                                    return 'glute';
+  if (/SHOULDER|肩/.test(t))                                         return 'shoulder';
+  if (/CHEST|RIB|胸|肋骨/.test(t))                                   return 'chest';
+  if (/WAIST|HIP|腰|骨盤|PELVIC/.test(t))                            return 'waist';
+  if (/LEG|CALF|THIGH|ANKLE|KNEE|HEEL|SQUAT|LUNGE|CLAM|STEP|TAP|SLIDE|WALK|TURN|KICK|MAMBO|SALSA|CATWALK|SUMO|ROCK|GROOVE|SWAY|踏む|歩く|蹴る|沈む|しゃがむ|向きを変える|股関節|揺れ|足|脚|もも|ふくらはぎ|膝/.test(t)) return 'leg';
+  if (/ARM|WRIST|REACH|PULL|PUSH|CHOP|DIAGONAL|腕|手首/.test(t))      return 'arm';
+  if (/BACK|SPINE|ROW|背中|背骨/.test(t))                            return 'back';
+  if (/CORE|CRUNCH|PLANK|BRACE|TWIST|POSTURE|BREATH|姿勢|呼吸|体側|体幹|お腹|腹筋/.test(t)) return 'core';
+  return 'full';
+}
+
+function getExPictoSvg(ex) {
+  return PICTO_OVERRIDES[ex.id] || PICTO_SVG[getExPictoKey(ex)] || PICTO_SVG.full;
+}
+
 function getExArrow(desc) {
   if (/回す|回る|回し|ひねる|8の字/.test(desc)) return '↻';
   if (/斜め/.test(desc))                        return '↗';
@@ -1643,6 +1707,7 @@ function loadExercise() {
   document.getElementById('t-ex-desc').textContent      = ex.desc;
   document.getElementById('t-ex-count').textContent     = `Exercise ${timerExIdx+1} / ${timerExercises.length}`;
   document.getElementById('bpm-lbl').textContent        = ex.bpm > 0 ? `${ex.bpm} BPM` : 'Free Flow';
+  document.getElementById('t-picto-svg').innerHTML      = getExPictoSvg(ex);
   document.getElementById('t-picto-arrow').textContent  = getExArrow(ex.desc);
   document.getElementById('t-picto-desc').textContent   = ex.desc;
   for (let i = 0; i < 4; i++) document.getElementById('beat-'+i).classList.remove('active');
@@ -2398,22 +2463,18 @@ function renderCamFrame() {
   const ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, CAM_W, CAM_H);
 
-  const filterMap = {
-    original: 'none',
-    bw:       'grayscale(100%) contrast(1.15)',
-    sepia:    'sepia(85%) contrast(1.05) brightness(0.95)',
-    fade:     'saturate(0.5) brightness(1.15) contrast(0.9)',
-    highcon:  'contrast(1.4) brightness(0.88) saturate(0.8)'
-  };
-  ctx.filter = filterMap[camFilter] || 'none';
-
   const ir = camImg.width / camImg.height;
   const cr = CAM_W / CAM_H;
   let sx, sy, sw, sh;
   if (ir > cr) { sh = camImg.height; sw = sh * cr; sx = (camImg.width - sw) / 2; sy = 0; }
   else         { sw = camImg.width;  sh = sw / cr; sx = 0; sy = (camImg.height - sh) / 2; }
   ctx.drawImage(camImg, sx, sy, sw, sh, 0, 0, CAM_W, CAM_H);
-  ctx.filter = 'none';
+
+  if (camFilter !== 'original') {
+    const id = ctx.getImageData(0, 0, CAM_W, CAM_H);
+    camFilterPixels(id.data, camFilter);
+    ctx.putImageData(id, 0, 0);
+  }
 
   const data = getCamData();
   if      (camFrame === 'cover') drawCamCover(ctx, data);
@@ -2425,6 +2486,47 @@ function renderCamFrame() {
   result.style.display = 'block';
   document.getElementById('cam-placeholder').style.display = 'none';
   document.getElementById('cam-save-hint').style.display   = 'block';
+}
+
+function camFilterPixels(d, f) {
+  const n = d.length;
+  const cl = v => v < 0 ? 0 : v > 255 ? 255 : v;
+  for (let i = 0; i < n; i += 4) {
+    let r = d[i], g = d[i+1], b = d[i+2];
+    if (f === 'bw') {
+      // grayscale(100%) contrast(1.15)
+      let v = 0.299*r + 0.587*g + 0.114*b;
+      v = (v - 127.5) * 1.15 + 127.5;
+      v = cl(Math.round(v));
+      d[i] = d[i+1] = d[i+2] = v;
+    } else if (f === 'sepia') {
+      // sepia(85%) brightness(0.95) contrast(1.05)
+      const sr = r*0.393 + g*0.769 + b*0.189;
+      const sg = r*0.349 + g*0.686 + b*0.168;
+      const sb = r*0.272 + g*0.534 + b*0.131;
+      r = r*0.15 + sr*0.85; g = g*0.15 + sg*0.85; b = b*0.15 + sb*0.85;
+      r *= 0.95; g *= 0.95; b *= 0.95;
+      d[i]   = cl(Math.round((r - 127.5)*1.05 + 127.5));
+      d[i+1] = cl(Math.round((g - 127.5)*1.05 + 127.5));
+      d[i+2] = cl(Math.round((b - 127.5)*1.05 + 127.5));
+    } else if (f === 'fade') {
+      // saturate(0.5) brightness(1.15) contrast(0.9)
+      const gray = 0.299*r + 0.587*g + 0.114*b;
+      r = gray + (r - gray)*0.5; g = gray + (g - gray)*0.5; b = gray + (b - gray)*0.5;
+      r *= 1.15; g *= 1.15; b *= 1.15;
+      d[i]   = cl(Math.round((r - 127.5)*0.9 + 127.5));
+      d[i+1] = cl(Math.round((g - 127.5)*0.9 + 127.5));
+      d[i+2] = cl(Math.round((b - 127.5)*0.9 + 127.5));
+    } else if (f === 'highcon') {
+      // contrast(1.4) brightness(0.88) saturate(0.8)
+      r = (r - 127.5)*1.4 + 127.5; g = (g - 127.5)*1.4 + 127.5; b = (b - 127.5)*1.4 + 127.5;
+      r *= 0.88; g *= 0.88; b *= 0.88;
+      const gr = 0.299*r + 0.587*g + 0.114*b;
+      d[i]   = cl(Math.round(gr + (r - gr)*0.8));
+      d[i+1] = cl(Math.round(gr + (g - gr)*0.8));
+      d[i+2] = cl(Math.round(gr + (b - gr)*0.8));
+    }
+  }
 }
 
 function getCamData() {

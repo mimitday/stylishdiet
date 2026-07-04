@@ -24,6 +24,43 @@
 
 <h1>stylishdiet / devlog</h1>
 
+<!-- ══════════ 2026-07-04 ══════════ -->
+<div class="entry">
+  <div class="entry-date">2026-07-04</div>
+  <div class="entry-title">ピクトグラム自動生成（一部手描き差し替え対応）</div>
+
+  <div class="section">
+    <div class="section-label">実装</div>
+    <div class="item ok">
+      <code>_picto-parts.html</code> の部位別ラインアート10種（首・肩・胸・腰・お尻・足・腕・背中・体幹・全身）を
+      <code>PICTO_SVG</code> としてアプリ本体に統合。タイマー画面の <code>t-picto-zone</code> にSVG表示エリアを追加。
+    </div>
+    <div class="item ok">
+      <code>getExPictoKey()</code>：種目名+descのキーワードから部位を自動判定するルールベース関数を実装。
+      全130種目（5日×24 + セルフケア7 + DEADモード3）でテストし、フォールバック（全身アイコン）は9件のみ
+      （いずれも実際に「全身」を表す種目名で妥当）。
+    </div>
+    <div class="item ok">
+      <code>PICTO_OVERRIDES</code> オブジェクトを新設。ユーザーが特定の種目を手描きしたら
+      <code>PICTO_OVERRIDES['d1e6'] = '&lt;svg...&gt;'</code> の形で追加するだけで、自動生成より優先して表示される設計。
+    </div>
+    <div class="item ok">
+      Playwrightでローカル起動し、全130種目でSVGが描画されること・コンソールエラーが出ないこと・ダーク/ライト両テーマでの表示を確認済み。
+    </div>
+    <div class="item ok">
+      <code>sw.js</code> のCACHEバージョンを v10 → v11 に更新（app/index.html変更に伴うルール対応）。
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">残タスク</div>
+    <div class="item todo">ユーザーが一部種目を手描きしたら <code>PICTO_OVERRIDES</code> に追加</div>
+    <div class="item todo">セットアップ画面の二重active問題（未確認）</div>
+    <div class="item todo">Stats・ライトモード・セットアップのlive動作確認</div>
+    <div class="item todo">公開準備が整ったらメンテページ → LPに戻す</div>
+  </div>
+</div>
+
 <!-- ══════════ 2026-06-07 ══════════ -->
 <div class="entry">
   <div class="entry-date">2026-06-07</div>
